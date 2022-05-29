@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 1 Probabilty and Inference | 544 Notes</title>
+  <meta name="description" content="Chapter 1 Probabilty and Inference | 544 Notes" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 1 Probabilty and Inference | 544 Notes" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 1 Probabilty and Inference | 544 Notes" />
+  
+  
+  
+
+<meta name="author" content="JHao Sun" />
+
+
+<meta name="date" content="2022-05-29" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="1" data-path="probabilty-and-inference.html"><a href="probabilty-and-inference.html"><i class="fa fa-check"></i><b>1</b> Probabilty and Inference</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">544 Notes</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="probabilty-and-inference" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Chapter 1</span> Probabilty and Inference<a href="probabilty-and-inference.html#probabilty-and-inference" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><strong>Bayes’ Rule</strong>: If <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are events in event space <span class="math inline">\(F\)</span>, then Bayes’ rule states that
+<span class="math display">\[
+P(A\mid B) = \frac{P(B\mid A)P(A)}{P(B)} = \frac{P(B\mid A)P(A)}{P(B\mid A)P(A) + P(B\mid A^c)P(A^c)}
+\]</span>
+Let</p>
+<ul>
+<li><span class="math inline">\(y\)</span> be the data we will collect from an experiment,</li>
+<li><span class="math inline">\(K\)</span> be everything we know for certain about the world (aside from <span class="math inline">\(y\)</span>), and</li>
+<li><span class="math inline">\(\theta\)</span> be anything we don’t know for certain.</li>
+</ul>
+<p>A Bayesian statistician is an individual who makes decisions based on the probability distribution of those things we don’t
+know conditional on what we know, i.e. <span class="math inline">\(p(\theta\mid y, K)\)</span>.</p>
+<ul>
+<li>Parameter estimation: <span class="math inline">\(p(\theta\mid y, M)\)</span>, where <span class="math inline">\(M\)</span> is the model with parameter vector <span class="math inline">\(\theta\)</span><br />
+</li>
+<li>Hypothesis testing: <span class="math inline">\(p(M_j\mid y, M)\)</span></li>
+<li>Prediction: <span class="math inline">\(p(\tilde{y}\mid y, M)\)</span></li>
+</ul>
+<div id="parameter-estimation-example-exponential-model" class="section level5 unnumbered hasAnchor">
+<h5>Parameter Estimation Example: exponential model<a href="probabilty-and-inference.html#parameter-estimation-example-exponential-model" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>Let <span class="math inline">\(Y\mid \theta \sim Exp(\theta)\)</span>, the likelihood is <span class="math inline">\(p(y\mid \theta) = \theta \exp(-\theta y)\)</span>. Let’s assume a prior <span class="math inline">\(\theta \sim Ga(a, b)\)</span>, <span class="math inline">\(p(\theta) = \frac{b^a}{\Gamma(a)}\theta^{a-1}e^{-b\theta}\)</span>, then <em>prior predictive distribution</em> is
+<span class="math display">\[
+p(y)=\int p(y \mid \theta) p(\theta) d \theta=\frac{b^{a}}{\Gamma(a)} \frac{\Gamma(a+1)}{(b+y)^{a+1}}
+\]</span>
+The posterior is
+<span class="math display">\[
+p(\theta\mid y) = \frac{p(y\mid \theta)p(\theta)}{p(y)} = \frac{(b+y)^{a+1}}{\Gamma(a+1)}\theta^{a+1-1}e^{-(b+y)\theta}
+\]</span>
+thus <span class="math inline">\(\theta\mid y \sim Ga(a+1, b+y)\)</span>.</p>
+<p><img src="/Users/sunhao/Dropbox/Markdown/Class%20Note/STAT544/fig/ch1fig1.png" style="zoom:30%;" /></p>
+<blockquote>
+<p>If <span class="math inline">\(p(y) &lt; \infty\)</span>, we can use <span class="math inline">\(p(\theta\mid y) \propto p(y\mid \theta)p(\theta)\)</span> to find the posterior. In the example, <span class="math inline">\(\theta^{a}e^{-(b+y)\theta}\)</span> is the <strong>kernel</strong> of a <span class="math inline">\(Ga(a+1, b+y)\)</span> distribution.</p>
+<p>Bayesian learning: <span class="math inline">\(p(\theta) \rightarrow p(\theta\mid y_1) \rightarrow p(\theta\mid y_1, y_2) \rightarrow \ldots\)</span></p>
+</blockquote>
+</div>
+<div id="model-selection" class="section level5 unnumbered hasAnchor">
+<h5>Model selection<a href="probabilty-and-inference.html#model-selection" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>Formally, to select a model, we use <span class="math inline">\(p(M_j\mid y) \propto p(y\mid M_j)p(M_j)\)</span>. Thus, a Bayesian approach provides a natural way to learn about models, i.e. <span class="math inline">\(p(M_j) \rightarrow p(M_j\mid y)\)</span>.</p>
+</div>
+<div id="prediction" class="section level5 unnumbered hasAnchor">
+<h5>Prediction<a href="probabilty-and-inference.html#prediction" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p><span class="math inline">\(p(\tilde{y}\mid y) = \int p(\tilde{y}, \theta \mid y)dy = \int p(\tilde{y}\mid \theta)p(\theta\mid y)d\theta\)</span>. From the previous example, let <span class="math inline">\(y_i \sim Exp(\theta)\)</span>, <span class="math inline">\(\theta \sim Ga(a,b)\)</span>,
+<span class="math display">\[
+\begin{aligned}
+p(\tilde{y} \mid y) &amp;=\int p(\tilde{y} \mid \theta) p(\theta \mid y) d \theta \\
+&amp;=\int \theta e^{-\theta \tilde{y}} \frac{(b+n \bar{y})^{a+n}}{\Gamma(a+1)} \theta^{a+n-1} e^{-\theta(b+n \bar{y})} d \theta \\
+&amp;=\frac{(b+n \bar{y})^{a+n}}{\Gamma(a+n)} \int \theta^{a+n+1-1} e^{-\theta(b+n \bar{y}+\tilde{y})} d \theta \\
+&amp;=\frac{(b+n \bar{y})^{a+n}}{\Gamma(a+n)} \frac{\Gamma(a+n+1)}{(b+n \bar{y}+\tilde{y})^{a+n+1}} \\
+&amp;=\frac{(a+n)(b+n \bar{y})^{a+n}}{(\tilde{y}+b+n \bar{y})^{a+n+1}}
+\end{aligned}
+\]</span>
+which is called the <strong>Lomax distribution</strong> for <span class="math inline">\(\tilde{y}\)</span> with parameters <span class="math inline">\(a + n\)</span> and <span class="math inline">\(b + n\bar y\)</span>.</p>
+<p><strong>Probabilty</strong>: A subjective probability describes an individual’s personal judgement about how likely a particular event is to occur.</p>
+<blockquote>
+<p>Rational individuals can differ about the probability of an event by having different knowledge, i.e. <span class="math inline">\(P(E \mid K_1) \neq P(E \mid K_2)\)</span>. But given enough data, we might have <span class="math inline">\(P(E \mid K_1,Y) \approx P(E \mid K_2, y)\)</span>.</p>
+</blockquote>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/ch1.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

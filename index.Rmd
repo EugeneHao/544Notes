@@ -1,0 +1,16 @@
+--- 
+title: "544 Notes"
+author: "JHao Sun"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+link-citations: yes
+github-repo: rstudio/bookdown-demo
+---
+
+# Introduction {-}
+
+
+This is a notebook for STAT 544, instructed by Dr. Jarad Niemi. The notes are based on the class notes from [this webpage](https://www.jarad.me/courses/stat544/) and should only be used for personal study. 
+
+
