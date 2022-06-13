@@ -1,0 +1,135 @@
+# Parameter Estimation
+
+Suppose $Y \sim Bin(n, \theta)$, and $\theta \sim Be(a, b)$, then $p(\theta\mid y) \propto \theta^{a + y - 1}(1-\theta)^{b+n-y-1}$. Thus $\theta\mid y \sim Be(a+y, b+n-y)$. 
+
+A $100(1 - \alpha)\%$ **credible interval** is any interval in the posterior that contains the parameter with probability $(1- \alpha)$. Define a loss function $L(\theta, \hat\theta) = -U(\theta, \hat\theta)$ where $\theta$ is the parameter of interest and $\hat\theta  = \hat\theta(y)$ is the estimator of $\theta$. 
+
+Find the estimator that minimizes the expected loss: $\hat\theta_{Bayes} = \arg\min_{\hat\theta}E\left[ L(\theta, \hat\theta)\mid y\right]$. Common estimators are: 
+
++ Mean: $\hat\theta_{Bayes} = E(\theta\mid y)$ minimizes $L(\theta, \hat\theta) = (\theta, \hat\theta)^2$. 
++ Median: $\int_{\hat\theta}^\infty p(\theta\mid y) d\theta = \frac{1}{2}$ minimizes $L(\theta, \hat\theta) = |\theta - \hat\theta |$. 
++ Mode: $\hat\theta_{Bayes} = \arg\max_{\theta} p(\theta\mid y)$ is obtained by minimizing $L(\theta, \hat\theta) = -I(|\theta- \hat\theta) < \epsilon)$ as $\epsilon \rightarrow 0$, also called **maximum a posterior (MAP)** estimator.  
+
+A $100(1- \alpha)\%$ credible interval is any interval $(L, U)$ such that $1 - \alpha = \int_{L}^U p(\theta\mid y) d\theta$. Some typical intervals are 
+
++ Equal-tailed: $\alpha/2 = \int_{-\infty}^L p(\theta\mid y)d\theta = \int_{U}^\infty p(\theta\mid y)d\theta$. 
++ One-sided: either $L = -\infty$ or $U = \infty$ 
++ **Highest posterior density (HPD)**: $p(L\mid y) = p(U\mid y)$
+
+A **prior probability distribution**, often called simply the prior, of an uncertain quantity $\theta$ is the probability distribution that would express one's uncertainty about $\theta$ before the "data" is taken into account.
+
+A prior $p(\theta)$ is **conjugate** if for $p(\theta) \in \mathcal{P}$ and $p(y\mid \theta) \in \mathcal{F}$, $p(\theta\mid y) \in \mathcal{P}$ where $\mathcal{F}$ and $\mathcal{P} are families of distributions.
+
+> Example: the beta distribution ($\mathcal{P}$) is conjugate to the binomial distribution
+> Discrete priors are conjugate. 
+> Mixture of conjugate priors are conjugate. 
+
+A **natural conjugate prio**r is a conjugate prior that has the same functional form as the likelihood. 
+
+> Example: the beta distribution is a natural conjugate prior since $p(\theta) \propto \theta^{a-1}(1-\theta)^{b-1}$ and $L(\theta) \propto \theta^y(1-\theta)^{n-y}$.
+
+**Mixture of conjugate priors**: Suppose $\theta \sim \sum_{i = 1}^I p_ip_i(\theta)$, $\sum_{i=1}^I p_i = 1$ and $p_i(y) = \int p(y\mid \theta) p_i(\theta)d\theta$, then $\theta\mid y \sim \sum_{i=1}^I p_i'p_i(\theta\mid y)$, $p_i' \propto p_ip_i(y)$ where $p_i(\theta\mid y) = p(y \mid \theta)p_i(\theta)/p_i(y)$. 
+
+> Example: $Y \sim Bin(n, \theta)$, $\theta \sim pBe(a_1, b_1) + (1-p)Be(a_2, b_2)$, then 
+> $$
+> \theta\mid y \sim p'Be(a_1 + y, b_1 + n - y) + (1 - p')Be(a_2 + y, b_2 + n - y)
+> $$
+> with $p' = \frac{pp_1(y)}{pp_1(y) + (1-p)p_2(y)}$, $p_i(y) =  {n \choose y} \frac{Beta(a_i + y, b_i + n - y)}{Beta(a_i, b_i)}$. 
+
+<img src="/Users/sunhao/Dropbox/Markdown/Class Note/STAT544/fig/ch2fig1.png" style="zoom:30%;" />
+
+A **default prior** is used when a data analyst is unable or unwilling to specify an informative prior distribution.
+
+> Suppose we use $\phi = \log (\theta/(1-\theta))$, the log odds of the parameter, and set $p(\phi) \propto 1$, then the implied prior on $\theta$ is 
+> $$
+> \begin{aligned}
+> p_{\theta}(\theta) \propto & 1\left|\frac{d}{d \theta} \log (\theta /[1-\theta])\right| \\
+> &=\frac{1-\theta}{\theta}\left[\frac{1}{1-\theta}+\frac{\theta}{[1-\theta]^{2}}\right] \\
+> &=\frac{1-\theta}{\theta}\left[\frac{[1-\theta]+\theta}{[1-\theta]^{2}}\right] \\
+> \rightarrow \quad &=\theta^{-1}[1-\theta]^{-1}
+> \end{aligned}
+> $$
+> a $Be(0, 0)$ if that were a proper distribution, and is different from setting $p(\theta) \propto 1$ which results in the $Be(1,1)$ prior.
+
+**Jeffreys prior** is a prior that is invariant to parameterization and is obtained via 
+$$
+p(\theta) \propto \sqrt{\text{det} \space \mathcal{I}(\theta)}
+$$
+where $\mathcal{I}(\theta)$ is the Fisher information.
+
+> Example: for a binomial distribution $\mathcal{I}(\theta) = \frac{n}{\theta(1-\theta)}$ so $p(\theta) \propto \theta^{-1/2} (1-\theta)^{-1/2}$. 
+
+**Improper prior**: An unnormalized density, $f(\theta)$, is proper if $\int f(\theta)d\theta = c < \infty$, and otherwise it is improper. 
+
+> Example: $Be(0, 0)$ is an improper distribution. Suppose $Y \sim Bin(n, \theta)$, the posterior $\theta\mid y \sim Be(y, n-y)$ is proper if $0 < y < n$. 
+
+##### Normal Distribution {-}
+
+Thm: If $Y_i \stackrel{iid}{\sim} N(\mu, s^2)$ ($s^2$ is known), Jeffreys prior for $\mu$ is $p(\mu) \propto 1$ and the posterior is 
+$$
+p(\mu \mid y) \propto \exp\left(-\frac{1}{2s^2/n} [\mu^2 - 2\mu\bar y] \right) \sim N(\bar y, s^2/n)
+$$
+The natural conjugate prior is $\mu \sim N(m, C)$ and the posterior $\mu\mid y \sim N(m', C')$ where $C' = [\frac{1}{C} + \frac{n}{s^2}]^{-1}$ and $m' = C'[\frac{m}{C} + \frac{n}{s^2}\bar y]$. 
+
+> + The posterior precision is the sum of the prior and observation precisions
+> + The posterior mean is a precision weighted average of the prior and data. 
+> + Jeffrey prior/posterior are the limits of the conjugate prior/posterior as $C \rightarrow \infty$, i.e. $\lim_{C\rightarrow \infty} N(m, C) \stackrel{d}{\rightarrow} \propto 1$ and $\lim_{C \rightarrow \infty} N(m', C') \stackrel{d}{\rightarrow} N(\bar y, s^2/n)$. 
+
+Thm: If $Y_i \stackrel{iid}{\sim} N(m, \sigma^2)$ ($m$ is known), Jeffery prior for $\sigma^2$ is $p(\sigma^2) \propto 1/\sigma^2$ and the posterior is 
+$$
+p(\sigma^2\mid y) \propto (\sigma^2)^{-n/2-1}\exp\left(-\frac{1}{2\sigma^2}\sum_{i=1}^n [y_i - m]^2 \right) \sim IG(n/2, \sum_{i=1}^n [y_i - m]^2).
+$$
+The natural conjugate prior is $\sigma^2 \sim IG(a, b)$ and the posterior $\sigma\mid y \sim IG(a + n/2, b + \sum_{i=1}^n [y_i - m]^2/2)$. 
+
+##### JAGS {-}
+
+```R
+# Y ~ Bin(n, theta), theta ~ Be(1, 1), we observe Y = 3 successes out of 10 attempts
+library(rjags)
+model = "
+model
+{
+y ~ dbin(theta,n)   # notice p then n
+theta ~ dbeta(a,b)
+}"
+
+dat = list(n=10, y=3, a=1, b=1)
+m = jags.model(textConnection(model), dat)
+
+r = coda.samples (m, "theta", n.iter=1000)
+summary(r)
+plot(r)
+```
+
+
+
+##### Stan {-}
+
+```{r message=FALSE, warning=FALSE, results='hide'}
+library(rstan)
+model = "
+data {
+int<lower=0> n; // define range and type
+int<lower=0> a; // and notice semicolons
+int<lower=0> b;
+int<lower=0, upper=n> y;
+}
+parameters {
+real<lower=0, upper=1> theta;
+}
+model {
+y ~ binomial(n, theta) ;
+theta ~ beta(a, b) ;
+}
+"
+
+dat = list(n=10, y=3, a=1, b=1)
+m = stan_model(model_code = model) # Only needs to be done once
+r = sampling(m, data = dat)
+```
+
+```{r}
+r
+plot(r)
+```
+

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Multiparameter Models | 544 Notes</title>
+  <meta name="description" content="Chapter 3 Multiparameter Models | 544 Notes" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Multiparameter Models | 544 Notes" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Multiparameter Models | 544 Notes" />
+  
+  
+  
+
+<meta name="author" content="JHao Sun" />
+
+
+<meta name="date" content="2022-06-12" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="parameter-estimation.html"/>
+<link rel="next" href="data-asymptotics.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="1" data-path="probabilty-and-inference.html"><a href="probabilty-and-inference.html"><i class="fa fa-check"></i><b>1</b> Probabilty and Inference</a></li>
+<li class="chapter" data-level="2" data-path="parameter-estimation.html"><a href="parameter-estimation.html"><i class="fa fa-check"></i><b>2</b> Parameter Estimation</a></li>
+<li class="chapter" data-level="3" data-path="multiparameter-models.html"><a href="multiparameter-models.html"><i class="fa fa-check"></i><b>3</b> Multiparameter Models</a></li>
+<li class="chapter" data-level="4" data-path="data-asymptotics.html"><a href="data-asymptotics.html"><i class="fa fa-check"></i><b>4</b> Data Asymptotics</a></li>
+<li class="chapter" data-level="5" data-path="hierarchical-model.html"><a href="hierarchical-model.html"><i class="fa fa-check"></i><b>5</b> Hierarchical Model</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">544 Notes</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="multiparameter-models" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Multiparameter Models<a href="multiparameter-models.html#multiparameter-models" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="example-1-independent-beta-binomial-model" class="section level5 unnumbered hasAnchor">
+<h5>Example 1: Independent Beta-binomial model<a href="multiparameter-models.html#example-1-independent-beta-binomial-model" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>Assume an independent binomial model,
+<span class="math display">\[
+Y_{s} \stackrel{i n d}{\sim} \operatorname{Bin}\left(n_{s}, \theta_{s}\right) \text {, i.e. }, p(y \mid \theta)=\prod_{s=1}^{S} p\left(y_{s} \mid \theta_{s}\right)=\prod_{s=1}^{S}\left(\begin{array}{l}
+n_{s} \\
+y_{s}
+\end{array}\right) \theta_{s}^{y_{s}}\left(1-\theta_{s}\right)^{n_{s}-y_{s}}
+\]</span>
+and assume independent beta priors distribution:
+<span class="math display">\[
+p(\theta)=\prod_{s=1}^{S} p\left(\theta_{s}\right)=\prod_{s=1}^{S} \frac{\theta_{s}^{a_{s}-1}\left(1-\theta_{s}\right)^{b_{s}-1}}{\operatorname{Beta}\left(a_{s}, b_{s}\right)} \mathrm{I}\left(0&lt;\theta_{s}&lt;1\right)
+\]</span>
+Then we have <span class="math inline">\(p(\theta\mid y) \propto \prod_{s = 1}^S \text{Beta}(\theta_s\mid a_s + y_s, b_s + n_s - y_s)\)</span>.</p>
+</div>
+<div id="example-2-normal-model-with-unknown-mean-and-variance" class="section level5 unnumbered hasAnchor">
+<h5>Example 2: Normal model with unknown mean and variance<a href="multiparameter-models.html#example-2-normal-model-with-unknown-mean-and-variance" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p><strong>Scaled-inverse <span class="math inline">\(\chi^2\)</span>-distribution</strong>: If <span class="math inline">\(\sigma^2 \sim IG(a, b)\)</span>, then <span class="math inline">\(\sigma^2 \sim Inv-\chi^2(v, s^2)\)</span> where</p>
+<ul>
+<li><span class="math inline">\(a = v/2\)</span> and <span class="math inline">\(b = vs^2/2\)</span>,</li>
+<li>or equivalently, <span class="math inline">\(v = 2a\)</span> and <span class="math inline">\(s^2 = b/a\)</span>.</li>
+</ul>
+<p><strong>Location-scale <span class="math inline">\(t\)</span>-distribution</strong>: <span class="math inline">\(t_v(m, s^2) \stackrel{v\rightarrow \infty}{\longrightarrow} N(m, s^2)\)</span>.</p>
+<p><strong>Normal-Inv-<span class="math inline">\(\chi^2\)</span> distribution</strong>: <span class="math inline">\(\mu\mid \sigma^2 \rightarrow N(m, \sigma^2/k)\)</span> and <span class="math inline">\(\sigma^2 \sim Inv-\chi^2(v, s^2)\)</span>, then the kernel of this joint density is
+<span class="math display">\[
+p(\mu, \sigma^2) \propto (\sigma^2)^{-(v+3)/2}e^{-\frac{1}{2\sigma^2}[k(\mu - m)^2 + vs^2]}
+\]</span>
+In addition, the marginal distribution for <span class="math inline">\(\mu\)</span> is <span class="math inline">\(t_v(m, s^2/k)\)</span>.</p>
+<p>Jeffrey prior can be shown to be <span class="math inline">\(p(\mu, \sigma^2) \propto (1/\sigma^2)^{3/2}\)</span> but <strong>reference prior</strong> finds that <span class="math inline">\(p(\mu, \sigma^2) \propto 1/\sigma^2\)</span> is more appropriate. Under the reference prior, the posterior is
+<span class="math display">\[
+p(\mu \mid \sigma^2, y) \sim N(\bar y, \sigma^2/n) \quad \sigma^2 \mid y \sim \text{Inv}-\chi^2(n-1, S^2)
+\]</span>
+and the marginal posterior for <span class="math inline">\(\mu\)</span> is <span class="math inline">\(\mu\mid y \sim t_{n-1}(\bar y, S^2/n)\)</span>.</p>
+<p>To predict <span class="math inline">\(\tilde{y} \sim N(\mu, \sigma^2)\)</span>, we can write <span class="math inline">\(\tilde{y} = \mu + \epsilon\)</span> with <span class="math inline">\(\mu\mid \sigma^2, y \sim N(\bar y, \sigma^2/n)\)</span> and <span class="math inline">\(\epsilon\mid \sigma^2, y \sim N(0, \sigma^2)\)</span>. Thus
+<span class="math display">\[
+\tilde{y} \mid \sigma^2, y \sim N(\bar y, \sigma^2[1+1/n])
+\]</span>
+Because <span class="math inline">\(\sigma^2\mid y \sim \text{Inv}-\chi^2(n-1, S^2)\)</span>, we have <span class="math inline">\(\tilde{y}\mid y \sim t_{n-1}(\bar y, S^2[1+1/n])\)</span>.</p>
+<p>The conjugate prior for <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^2\)</span> is
+<span class="math display">\[
+\mu \mid \sigma^2 \sim N(m, \sigma^2/k) \quad \sigma^2 \sim \text{Inv}-\chi^2(v, s^2)
+\]</span>
+where <span class="math inline">\(s^2\)</span> serves as a prior guess about <span class="math inline">\(\sigma^2\)</span> and <span class="math inline">\(v\)</span> controls how certain we are about that guess. The posterior under the prior is
+<span class="math display">\[
+\mu\left|\sigma^{2}, y \sim N\left(m^{\prime}, \sigma^{2} / k^{\prime}\right) \quad \sigma^{2}\right| y \sim \operatorname{lnv}-\chi^{2}\left(v^{\prime},\left(s^{\prime}\right)^{2}\right)
+\]</span>
+where <span class="math inline">\(k&#39; = k + n\)</span>, <span class="math inline">\(m&#39; = [km + n\bar y]/k&#39;\)</span> , <span class="math inline">\(v&#39; = v + n\)</span> and <span class="math inline">\(v&#39;(s&#39;)^2 = vs^2 + (n-1)S^2 + \frac{kn}{k&#39;}(\bar y - m)^2\)</span>. The marginal posterior for <span class="math inline">\(\mu\)</span> is
+<span class="math display">\[
+\mu \mid y \sim t_{v&#39;} (m&#39;, (s&#39;)^2/k&#39;)
+\]</span></p>
+</div>
+<div id="example-3-multinomial-dirichlet" class="section level5 unnumbered hasAnchor">
+<h5>Example 3: Multinomial-Dirichlet<a href="multiparameter-models.html#example-3-multinomial-dirichlet" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>Suppose <span class="math inline">\(Y = (Y_1, \ldots, Y_K) \sim Mult(n,\pi)\)</span> with pmf <span class="math inline">\(p(y) = n!\prod_{k=1}^K\frac{\pi_k^{y_k}}{y_k!}\)</span>, let <span class="math inline">\(\pi \sim Dir(a)\)</span> with concentration parmaeter <span class="math inline">\(a = (a_1, \ldots, a_K)\)</span> where <span class="math inline">\(a_k&gt;0\)</span> for all <span class="math inline">\(k\)</span>.</p>
+<blockquote>
+<p>Dirichlet distribution: The pdf of <span class="math inline">\(\pi\)</span> is <span class="math inline">\(p(\pi) = \frac{1}{\text{Beta}(a)}\prod_{k=1}^K \pi_k^{a_k - 1}\)</span> with <span class="math inline">\(\prod_{k=1}^K \pi_k = 1\)</span> and <span class="math inline">\(Beta(a)\)</span> is a multinomial beta function, i.e. <span class="math inline">\(Beta(a) = \frac{\prod_{k=1}^K \Gamma(a_k)}{\Gamma(\sum_{k=1}^K a_k)}\)</span>. <span class="math inline">\(E(\pi_k) = a_k/a_0\)</span>, <span class="math inline">\(V(\pi_k) = a_k(a_0 - a_k)/a_0^2(a_0+ 1)\)</span> where <span class="math inline">\(a_0 = \sum_{k=1}^K a_k\)</span>.</p>
+</blockquote>
+<p>Marginally, each component of a Dirichlet distribution is a Beta distribution with <span class="math inline">\(\pi_k \sim Be(a_k, a_0 - a_k)\)</span>.</p>
+<p>The conjugate prior for a multinomial distribution with unknown probabilty vector <span class="math inline">\(\pi\)</span> is a Dirichlet distribution. The Jeffery prior is a Dirichlet distribution with <span class="math inline">\(a_k = 0.5\)</span> for all <span class="math inline">\(k\)</span>.</p>
+<p>The posterior under a Direchlet prior is
+<span class="math display">\[
+p(\pi\mid y) \propto \prod_{k=1}^K \pi_{k}^{a_k + y_k - 1} \Rightarrow \pi\mid y \sim Dir(a + y)
+\]</span></p>
+</div>
+<div id="example-4-multivariate-normal" class="section level5 unnumbered hasAnchor">
+<h5>Example 4: Multivariate Normal<a href="multiparameter-models.html#example-4-multivariate-normal" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p><span class="math display">\[
+p(y) = (2\pi)^{-k/2}|\Sigma|^{-1/2}\exp\left(-\frac{1}{2}(y - \mu)^T \Sigma^{-1}(y - \mu) \right)
+\]</span></p>
+<p>Let <span class="math inline">\(Y \sim N(\mu, \Sigma)\)</span> with precision matrix <span class="math inline">\(\Omega = \Sigma^{-1}\)</span></p>
+<ul>
+<li>If <span class="math inline">\(\Sigma_{k, k&#39;} = 0\)</span>, then <span class="math inline">\(Y_k\)</span> and <span class="math inline">\(Y_{k&#39;}\)</span> are independent of each other</li>
+<li>If <span class="math inline">\(\Omega_{k, k&#39;} = 0\)</span>, then <span class="math inline">\(Y_k\)</span> and <span class="math inline">\(Y_{k&#39;}\)</span> are conditionally independent of each other given <span class="math inline">\(Y_j\)</span> for <span class="math inline">\(j \neq k, k&#39;\)</span></li>
+</ul>
+<p>Conjugate inference: let <span class="math inline">\(Y_i \sim N(\mu, S^2)\)</span> with conjugate prior <span class="math inline">\(\mu \sim N_k(m, C)\)</span>, the posterior <span class="math inline">\(\mu \mid y \sim N(m&#39;, C&#39;)\)</span> where <span class="math inline">\(C&#39; = [C^{-1} + nS^{-1}]^{-1}\)</span> and <span class="math inline">\(m&#39; = C&#39;[C^{-1}m + nS^{-1}\bar y]\)</span>.</p>
+<p>Let <span class="math inline">\(\Sigma\)</span> have an <strong>inverse Wishart distribution</strong>, i.e. <span class="math inline">\(\Sigma \sim IW(v, W^{-1})\)</span> with degree of freedom <span class="math inline">\(v &gt; K - 1\)</span> and positive definite scale matrix <span class="math inline">\(W\)</span>. A multivariate generalization of the normal-scaled-inverse-<span class="math inline">\(\chi^2\)</span> distribution is the normal-inverse Wishart distribution. For a vector <span class="math inline">\(\mu \subset \mathcal{R}^K\)</span> and <span class="math inline">\(K \times K\)</span> matrix <span class="math inline">\(\Sigma\)</span>, the normal-inverse Wishart distribution is
+<span class="math display">\[
+\mu \mid \Sigma \sim N(m, \Sigma/c) \quad \Sigma \sim IW(v, W^{-1})
+\]</span>
+The marginal distribution for <span class="math inline">\(\mu\)</span> is a multivariate t-distribution, i.e. <span class="math inline">\(\mu \sim t_{v-K+1}(m, W/[c(v-K+1)])\)</span>. The posterior distribution is
+<span class="math display">\[
+\mu \mid \Sigma, y \sim N(\bar y, \Sigma/n) \quad \Sigma \mid y \sim IW(n-1, S^{-1})
+\]</span></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="parameter-estimation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="data-asymptotics.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/ch3.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

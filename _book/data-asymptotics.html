@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 1 Probabilty and Inference | 544 Notes</title>
-  <meta name="description" content="Chapter 1 Probabilty and Inference | 544 Notes" />
+  <title>Chapter 4 Data Asymptotics | 544 Notes</title>
+  <meta name="description" content="Chapter 4 Data Asymptotics | 544 Notes" />
   <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 1 Probabilty and Inference | 544 Notes" />
+  <meta property="og:title" content="Chapter 4 Data Asymptotics | 544 Notes" />
   <meta property="og:type" content="book" />
   
   
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 1 Probabilty and Inference | 544 Notes" />
+  <meta name="twitter:title" content="Chapter 4 Data Asymptotics | 544 Notes" />
   
   
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="index.html"/>
-<link rel="next" href="parameter-estimation.html"/>
+<link rel="prev" href="multiparameter-models.html"/>
+<link rel="next" href="hierarchical-model.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -162,64 +162,50 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="probabilty-and-inference" class="section level1 hasAnchor" number="1">
-<h1><span class="header-section-number">Chapter 1</span> Probabilty and Inference<a href="probabilty-and-inference.html#probabilty-and-inference" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p><strong>Bayes’ Rule</strong>: If <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are events in event space <span class="math inline">\(F\)</span>, then Bayes’ rule states that
+<div id="data-asymptotics" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Data Asymptotics<a href="data-asymptotics.html#data-asymptotics" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Suppose <span class="math inline">\(p(\theta\mid y)\)</span> is unimodel and roughly symmetric, a Taylor series expansion of the logarithm of the posterior around the posterior mode <span class="math inline">\(\hat\theta\)</span> is
 <span class="math display">\[
-P(A\mid B) = \frac{P(B\mid A)P(A)}{P(B)} = \frac{P(B\mid A)P(A)}{P(B\mid A)P(A) + P(B\mid A^c)P(A^c)}
+\log p(\theta \mid y)=\log p(\hat{\theta} \mid y)-\frac{1}{2}(\theta-\hat{\theta})^{\top}\left[-\frac{d^{2}}{d \theta^{2}} \log p(\theta \mid y)\right]_{\theta=\hat{\theta}}(\theta-\hat{\theta})+\cdots
 \]</span>
-Let</p>
-<ul>
-<li><span class="math inline">\(y\)</span> be the data we will collect from an experiment,</li>
-<li><span class="math inline">\(K\)</span> be everything we know for certain about the world (aside from <span class="math inline">\(y\)</span>), and</li>
-<li><span class="math inline">\(\theta\)</span> be anything we don’t know for certain.</li>
-</ul>
-<p>A Bayesian statistician is an individual who makes decisions based on the probability distribution of those things we don’t
-know conditional on what we know, i.e. <span class="math inline">\(p(\theta\mid y, K)\)</span>.</p>
-<ul>
-<li>Parameter estimation: <span class="math inline">\(p(\theta\mid y, M)\)</span>, where <span class="math inline">\(M\)</span> is the model with parameter vector <span class="math inline">\(\theta\)</span><br />
-</li>
-<li>Hypothesis testing: <span class="math inline">\(p(M_j\mid y, M)\)</span></li>
-<li>Prediction: <span class="math inline">\(p(\tilde{y}\mid y, M)\)</span></li>
-</ul>
-<div id="parameter-estimation-example-exponential-model" class="section level5 unnumbered hasAnchor">
-<h5>Parameter Estimation Example: exponential model<a href="probabilty-and-inference.html#parameter-estimation-example-exponential-model" class="anchor-section" aria-label="Anchor link to header"></a></h5>
-<p>Let <span class="math inline">\(Y\mid \theta \sim Exp(\theta)\)</span>, the likelihood is <span class="math inline">\(p(y\mid \theta) = \theta \exp(-\theta y)\)</span>. Let’s assume a prior <span class="math inline">\(\theta \sim Ga(a, b)\)</span>, <span class="math inline">\(p(\theta) = \frac{b^a}{\Gamma(a)}\theta^{a-1}e^{-b\theta}\)</span>, then <em>prior predictive distribution</em> is
-<span class="math display">\[
-p(y)=\int p(y \mid \theta) p(\theta) d \theta=\frac{b^{a}}{\Gamma(a)} \frac{\Gamma(a+1)}{(b+y)^{a+1}}
-\]</span>
-The posterior is
-<span class="math display">\[
-p(\theta\mid y) = \frac{p(y\mid \theta)p(\theta)}{p(y)} = \frac{(b+y)^{a+1}}{\Gamma(a+1)}\theta^{a+1-1}e^{-(b+y)\theta}
-\]</span>
-thus <span class="math inline">\(\theta\mid y \sim Ga(a+1, b+y)\)</span>.</p>
-<p><img src="/Users/sunhao/Dropbox/Markdown/Class%20Note/STAT544/fig/ch1fig1.png" style="zoom:30%;" /></p>
+Discarding the higher order terms, this expansionsion provides a normal approximation to the posterior, i.e. <span class="math inline">\(p(\theta\mid y) \stackrel{d}{\approx} N(\hat\theta, I(\hat\theta)^{-1})\)</span>.</p>
 <blockquote>
-<p>If <span class="math inline">\(p(y) &lt; \infty\)</span>, we can use <span class="math inline">\(p(\theta\mid y) \propto p(y\mid \theta)p(\theta)\)</span> to find the posterior. In the example, <span class="math inline">\(\theta^{a}e^{-(b+y)\theta}\)</span> is the <strong>kernel</strong> of a <span class="math inline">\(Ga(a+1, b+y)\)</span> distribution.</p>
-<p>Bayesian learning: <span class="math inline">\(p(\theta) \rightarrow p(\theta\mid y_1) \rightarrow p(\theta\mid y_1, y_2) \rightarrow \ldots\)</span></p>
+<p>Theorem 1: If the parameter space <span class="math inline">\(\Theta\)</span> is discrete and <span class="math inline">\(P(\theta = \theta_0) &gt; 0\)</span>, then <span class="math inline">\(P(\theta = \theta_0\mid y) \rightarrow 1\)</span> as <span class="math inline">\(n \rightarrow \infty\)</span>.</p>
+<p>Theorem 2: If the parameter space <span class="math inline">\(\Theta\)</span> is continuous and <span class="math inline">\(A\)</span> is a neighborhood around <span class="math inline">\(\Theta_0\)</span> with <span class="math inline">\(P(\theta\in A) &gt; 0\)</span>, then <span class="math inline">\(P(\theta \in A \mid y) \rightarrow 1\)</span> as <span class="math inline">\(n \rightarrow \infty\)</span>.</p>
+<p>An estimator is consistent, i.e. <span class="math inline">\(\hat\theta \stackrel{p}{\rightarrow} \theta_0\)</span> if <span class="math inline">\(\lim_{n \rightarrow \infty} P(|\hat\theta - \theta_0| &lt; \epsilon) = 1\)</span>. Under regularity conditions, <span class="math inline">\(\hat\theta_{MLE} \stackrel{p}{\rightarrow} \theta_0\)</span> .</p>
 </blockquote>
+<div id="example-1-binomial-example" class="section level5 unnumbered hasAnchor">
+<h5>Example 1: Binomial example<a href="data-asymptotics.html#example-1-binomial-example" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>Let <span class="math inline">\(y \sim Bin(n, \theta)\)</span> and <span class="math inline">\(\theta \sim Be(a, b)\)</span>, then <span class="math inline">\(\theta\mid y \sim Be(a + y, b + n - y)\)</span> and the posterior mode is <span class="math inline">\(\hat\theta = \frac{y&#39;}{n&#39;} = \frac{a + y - 1}{a + b + n - 2}\)</span>. Thus <span class="math inline">\(I(\hat\theta) = \frac{n&#39;}{\hat\theta(1 - \hat\theta)}\)</span> and <span class="math inline">\(p(\theta\mid y) \stackrel{d}{\approx } N\left(\hat\theta, \frac{\hat\theta(1 - \hat\theta)}{n&#39;} \right)\)</span>.</p>
+<p>Recall that <span class="math inline">\(\hat\theta_{MLE} = y/n\)</span>. The following estimators are all consistent</p>
+<ul>
+<li>Posterior mean: <span class="math inline">\(\frac{a + y}{a + b + n}\)</span></li>
+<li>Posterior median: <span class="math inline">\(\approx \frac{a + y - 1/3}{a + b + n - 2/3}\)</span> for <span class="math inline">\(a, b &gt; 1\)</span></li>
+<li>Posterior mode: <span class="math inline">\(\frac{a + y - 1}{a + b + n - 2}\)</span></li>
+</ul>
+<p>since as <span class="math inline">\(n \rightarrow \infty\)</span>, these all converage to <span class="math inline">\(\hat\theta_{MLE} = y/n\)</span>.</p>
 </div>
-<div id="model-selection" class="section level5 unnumbered hasAnchor">
-<h5>Model selection<a href="probabilty-and-inference.html#model-selection" class="anchor-section" aria-label="Anchor link to header"></a></h5>
-<p>Formally, to select a model, we use <span class="math inline">\(p(M_j\mid y) \propto p(y\mid M_j)p(M_j)\)</span>. Thus, a Bayesian approach provides a natural way to learn about models, i.e. <span class="math inline">\(p(M_j) \rightarrow p(M_j\mid y)\)</span>.</p>
+<div id="example-2-normal-example" class="section level5 unnumbered hasAnchor">
+<h5>Example 2: Normal example<a href="data-asymptotics.html#example-2-normal-example" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>Consider <span class="math inline">\(Y_i \stackrel{iid}{\sim} N(\theta, 1)\)</span> with known and prior <span class="math inline">\(\theta \sim N(c, 1)\)</span>, then <span class="math inline">\(\theta\mid y \sim N\left(\frac{1}{n+1}c + \frac{n}{n+1}\bar y, \frac{1}{n+1} \right)\)</span>.</p>
+<p>Recall that <span class="math inline">\(\hat\theta_{MLE} = \bar y\)</span>, and the posterior mean coverages to the MLE.</p>
 </div>
-<div id="prediction" class="section level5 unnumbered hasAnchor">
-<h5>Prediction<a href="probabilty-and-inference.html#prediction" class="anchor-section" aria-label="Anchor link to header"></a></h5>
-<p><span class="math inline">\(p(\tilde{y}\mid y) = \int p(\tilde{y}, \theta \mid y)dy = \int p(\tilde{y}\mid \theta)p(\theta\mid y)d\theta\)</span>. From the previous example, let <span class="math inline">\(y_i \sim Exp(\theta)\)</span>, <span class="math inline">\(\theta \sim Ga(a,b)\)</span>,
+<div id="asymptotic-normality" class="section level5 unnumbered hasAnchor">
+<h5>Asymptotic normality<a href="data-asymptotics.html#asymptotic-normality" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>For large <span class="math inline">\(n\)</span>, we have
 <span class="math display">\[
-\begin{aligned}
-p(\tilde{y} \mid y) &amp;=\int p(\tilde{y} \mid \theta) p(\theta \mid y) d \theta \\
-&amp;=\int \theta e^{-\theta \tilde{y}} \frac{(b+n \bar{y})^{a+n}}{\Gamma(a+1)} \theta^{a+n-1} e^{-\theta(b+n \bar{y})} d \theta \\
-&amp;=\frac{(b+n \bar{y})^{a+n}}{\Gamma(a+n)} \int \theta^{a+n+1-1} e^{-\theta(b+n \bar{y}+\tilde{y})} d \theta \\
-&amp;=\frac{(b+n \bar{y})^{a+n}}{\Gamma(a+n)} \frac{\Gamma(a+n+1)}{(b+n \bar{y}+\tilde{y})^{a+n+1}} \\
-&amp;=\frac{(a+n)(b+n \bar{y})^{a+n}}{(\tilde{y}+b+n \bar{y})^{a+n+1}}
-\end{aligned}
+\log p(\theta \mid y) \approx \log p(\hat{\theta} \mid y)-\frac{1}{2}(\theta-\hat{\theta})^{\top}\left[n \mathrm{I}\left(\theta_{0}\right)\right](\theta-\hat{\theta})
 \]</span>
-which is called the <strong>Lomax distribution</strong> for <span class="math inline">\(\tilde{y}\)</span> with parameters <span class="math inline">\(a + n\)</span> and <span class="math inline">\(b + n\bar y\)</span>.</p>
-<p><strong>Probabilty</strong>: A subjective probability describes an individual’s personal judgement about how likely a particular event is to occur.</p>
-<blockquote>
-<p>Rational individuals can differ about the probability of an event by having different knowledge, i.e. <span class="math inline">\(P(E \mid K_1) \neq P(E \mid K_2)\)</span>. But given enough data, we might have <span class="math inline">\(P(E \mid K_1,Y) \approx P(E \mid K_2, y)\)</span>.</p>
-</blockquote>
+where <span class="math inline">\(\hat\theta\)</span> is the posterior mode. Since <span class="math inline">\(\hat\theta \rightarrow \theta_0\)</span> and <span class="math inline">\(I(\hat\theta) \rightarrow I(\theta_0)\)</span> as <span class="math inline">\(n \rightarrow \infty\)</span>, we have
+<span class="math display">\[
+p(\theta\mid y )\propto \exp\left(-\frac{1}{2}(\theta - \hat\theta)^T\left[n I(\hat\theta) \right] (\theta - \hat\theta) \right).
+\]</span>
+Thus, <span class="math inline">\(\theta\mid y \stackrel{d}{\rightarrow} N\left(\hat\theta, \frac{1}{n} I(\hat\theta)^{-1} \right)\)</span>, i.e. the posterior distribution is asymptotically normal.</p>
+<p>Suppose that <span class="math inline">\(f(y)\)</span> the true sampling distribution does not correspond to <span class="math inline">\(p(y\mid \theta)\)</span> for some <span class="math inline">\(\theta = \theta_0\)</span>. Then the posterior <span class="math inline">\(p(\theta\mid y)\)</span> converges to a <span class="math inline">\(\theta_0\)</span> that is the smallest in <strong>Kullback-Leibler divergence</strong> to the true <span class="math inline">\(f(y)\)</span> where
+<span class="math display">\[
+K L(f(y) \| p(y \mid \theta))=E\left[\log \left(\frac{f(y)}{p(y \mid \theta)}\right)\right]=\int \log \left(\frac{f(y)}{p(y \mid \theta)}\right) f(y) d y
+\]</span>
+That is, we do about the best that we can given that we have assumed the wrong sampling distribution <span class="math inline">\(p(y \mid \theta)\)</span>.</p>
 
 </div>
 </div>
@@ -228,8 +214,8 @@ which is called the <strong>Lomax distribution</strong> for <span class="math in
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="parameter-estimation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="multiparameter-models.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="hierarchical-model.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -260,7 +246,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/ch1.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/ch4.Rmd",
 "text": "Edit"
 },
 "history": {

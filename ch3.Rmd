@@ -1,0 +1,95 @@
+# Multiparameter Models
+
+##### Example 1:  Independent Beta-binomial model {-}
+
+Assume an independent binomial model,
+$$
+Y_{s} \stackrel{i n d}{\sim} \operatorname{Bin}\left(n_{s}, \theta_{s}\right) \text {, i.e. }, p(y \mid \theta)=\prod_{s=1}^{S} p\left(y_{s} \mid \theta_{s}\right)=\prod_{s=1}^{S}\left(\begin{array}{l}
+n_{s} \\
+y_{s}
+\end{array}\right) \theta_{s}^{y_{s}}\left(1-\theta_{s}\right)^{n_{s}-y_{s}}
+$$
+and assume independent beta priors distribution: 
+$$
+p(\theta)=\prod_{s=1}^{S} p\left(\theta_{s}\right)=\prod_{s=1}^{S} \frac{\theta_{s}^{a_{s}-1}\left(1-\theta_{s}\right)^{b_{s}-1}}{\operatorname{Beta}\left(a_{s}, b_{s}\right)} \mathrm{I}\left(0<\theta_{s}<1\right)
+$$
+Then we have $p(\theta\mid y) \propto \prod_{s = 1}^S \text{Beta}(\theta_s\mid a_s + y_s, b_s + n_s - y_s)$. 
+
+##### Example 2: Normal model with unknown mean and variance {-}
+
+**Scaled-inverse $\chi^2$-distribution**: If $\sigma^2 \sim IG(a, b)$, then $\sigma^2 \sim Inv-\chi^2(v, s^2)$ where 
+
++ $a = v/2$ and $b = vs^2/2$, 
++ or equivalently, $v = 2a$ and $s^2 = b/a$. 
+
+**Location-scale $t$-distribution**: $t_v(m, s^2) \stackrel{v\rightarrow \infty}{\longrightarrow} N(m, s^2)$. 
+
+**Normal-Inv-$\chi^2$ distribution**: $\mu\mid \sigma^2 \rightarrow N(m, \sigma^2/k)$ and $\sigma^2 \sim Inv-\chi^2(v, s^2)$, then the kernel of this joint density is 
+$$
+p(\mu, \sigma^2) \propto (\sigma^2)^{-(v+3)/2}e^{-\frac{1}{2\sigma^2}[k(\mu - m)^2 + vs^2]}
+$$
+In addition, the marginal distribution for $\mu$ is $t_v(m, s^2/k)$. 
+
+Jeffrey prior can be shown to be $p(\mu, \sigma^2) \propto (1/\sigma^2)^{3/2}$ but **reference prior** finds that $p(\mu, \sigma^2) \propto 1/\sigma^2$ is more appropriate. Under the reference prior, the posterior is 
+$$
+p(\mu \mid \sigma^2, y) \sim N(\bar y, \sigma^2/n) \quad \sigma^2 \mid y \sim \text{Inv}-\chi^2(n-1, S^2)
+$$
+and the marginal posterior for $\mu$ is $\mu\mid y \sim t_{n-1}(\bar y, S^2/n)$. 
+
+To predict $\tilde{y} \sim N(\mu, \sigma^2)$, we can write $\tilde{y} = \mu + \epsilon$ with $\mu\mid \sigma^2, y \sim N(\bar y, \sigma^2/n)$ and $\epsilon\mid \sigma^2, y \sim N(0, \sigma^2)$. Thus 
+$$
+\tilde{y} \mid \sigma^2, y \sim N(\bar y, \sigma^2[1+1/n])
+$$
+ Because $\sigma^2\mid y \sim \text{Inv}-\chi^2(n-1, S^2)$, we have $\tilde{y}\mid y \sim t_{n-1}(\bar y, S^2[1+1/n])$.  
+
+The conjugate prior for $\mu$ and $\sigma^2$ is 
+$$
+\mu \mid \sigma^2 \sim N(m, \sigma^2/k) \quad \sigma^2 \sim \text{Inv}-\chi^2(v, s^2)
+$$
+where $s^2$ serves as a prior guess about $\sigma^2$ and $v$ controls how certain we are about that guess. The posterior under the prior is 
+$$
+\mu\left|\sigma^{2}, y \sim N\left(m^{\prime}, \sigma^{2} / k^{\prime}\right) \quad \sigma^{2}\right| y \sim \operatorname{lnv}-\chi^{2}\left(v^{\prime},\left(s^{\prime}\right)^{2}\right)
+$$
+where $k' = k + n$, $m' = [km + n\bar y]/k'$ , $v' = v + n$ and $v'(s')^2 = vs^2 + (n-1)S^2 + \frac{kn}{k'}(\bar y - m)^2$. The marginal posterior for $\mu$ is 
+$$
+\mu \mid y \sim t_{v'} (m', (s')^2/k')
+$$
+
+##### Example 3: Multinomial-Dirichlet {-}
+
+Suppose $Y = (Y_1, \ldots, Y_K) \sim Mult(n,\pi)$ with pmf $p(y) = n!\prod_{k=1}^K\frac{\pi_k^{y_k}}{y_k!}$, let $\pi \sim Dir(a)$ with concentration parmaeter $a = (a_1, \ldots, a_K)$ where $a_k>0$ for all $k$. 
+
+> Dirichlet distribution: The pdf of $\pi$ is $p(\pi) = \frac{1}{\text{Beta}(a)}\prod_{k=1}^K \pi_k^{a_k - 1}$ with $\prod_{k=1}^K \pi_k = 1$ and $Beta(a)$ is a multinomial beta function, i.e. $Beta(a) = \frac{\prod_{k=1}^K \Gamma(a_k)}{\Gamma(\sum_{k=1}^K a_k)}$. $E(\pi_k) = a_k/a_0$, $V(\pi_k) = a_k(a_0 - a_k)/a_0^2(a_0+ 1)$ where $a_0 = \sum_{k=1}^K a_k$. 
+
+Marginally, each component of a Dirichlet distribution is a Beta distribution with $\pi_k \sim Be(a_k, a_0 - a_k)$. 
+
+The conjugate prior for a multinomial distribution with unknown probabilty vector $\pi$ is a Dirichlet distribution. The Jeffery prior is a Dirichlet distribution with $a_k = 0.5$ for all $k$. 
+
+The posterior under a Direchlet prior is 
+$$
+p(\pi\mid y) \propto \prod_{k=1}^K \pi_{k}^{a_k + y_k - 1} \Rightarrow \pi\mid y \sim Dir(a + y)
+$$
+
+##### Example 4: Multivariate Normal {-}
+
+$$
+p(y) = (2\pi)^{-k/2}|\Sigma|^{-1/2}\exp\left(-\frac{1}{2}(y - \mu)^T \Sigma^{-1}(y - \mu) \right)
+$$
+
+Let $Y \sim N(\mu, \Sigma)$ with precision matrix $\Omega = \Sigma^{-1}$
+
++ If $\Sigma_{k, k'} = 0$, then $Y_k$ and $Y_{k'}$ are independent of each other 
++ If $\Omega_{k, k'} = 0$, then $Y_k$ and $Y_{k'}$ are conditionally independent of each other given $Y_j$ for $j \neq k, k'$ 
+
+Conjugate inference: let $Y_i \sim N(\mu, S^2)$ with conjugate prior $\mu \sim N_k(m, C)$, the posterior $\mu \mid y \sim N(m', C')$ where $C' = [C^{-1} + nS^{-1}]^{-1}$ and $m' = C'[C^{-1}m + nS^{-1}\bar y]$. 
+
+Let $\Sigma$ have an **inverse Wishart distribution**, i.e. $\Sigma \sim IW(v, W^{-1})$ with degree of freedom $v > K - 1$ and positive definite scale matrix $W$. A multivariate generalization of the normal-scaled-inverse-$\chi^2$ distribution is the normal-inverse Wishart distribution. For a vector $\mu \subset \mathcal{R}^K$ and $K \times K$ matrix $\Sigma$, the normal-inverse Wishart distribution is 
+$$
+\mu \mid \Sigma \sim N(m, \Sigma/c) \quad \Sigma \sim IW(v, W^{-1})
+$$
+The marginal distribution for $\mu$ is a multivariate t-distribution, i.e. $\mu \sim t_{v-K+1}(m, W/[c(v-K+1)])$. The posterior distribution is 
+$$
+\mu \mid \Sigma, y \sim N(\bar y, \Sigma/n) \quad \Sigma \mid y \sim IW(n-1, S^{-1})
+$$
+
+

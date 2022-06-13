@@ -1,0 +1,51 @@
+# Data Asymptotics
+
+Suppose $p(\theta\mid y)$ is unimodel and roughly symmetric, a Taylor series expansion of the logarithm of the posterior around the posterior mode $\hat\theta$ is 
+$$
+\log p(\theta \mid y)=\log p(\hat{\theta} \mid y)-\frac{1}{2}(\theta-\hat{\theta})^{\top}\left[-\frac{d^{2}}{d \theta^{2}} \log p(\theta \mid y)\right]_{\theta=\hat{\theta}}(\theta-\hat{\theta})+\cdots
+$$
+Discarding the higher order terms, this expansionsion provides a normal approximation to the posterior, i.e. $p(\theta\mid y) \stackrel{d}{\approx} N(\hat\theta, I(\hat\theta)^{-1})$. 
+
+> Theorem 1: If the parameter space $\Theta$ is discrete and $P(\theta = \theta_0) > 0$, then $P(\theta = \theta_0\mid y) \rightarrow 1$ as $n \rightarrow \infty$. 
+>
+> Theorem 2: If the parameter space $\Theta$ is continuous and $A$ is a neighborhood around $\Theta_0$ with $P(\theta\in A) > 0$, then $P(\theta \in A \mid y) \rightarrow 1$ as $n \rightarrow \infty$. 
+>
+> An estimator is consistent, i.e. $\hat\theta \stackrel{p}{\rightarrow} \theta_0$ if $\lim_{n \rightarrow \infty} P(|\hat\theta - \theta_0| < \epsilon) = 1$. Under regularity conditions, $\hat\theta_{MLE} \stackrel{p}{\rightarrow}  \theta_0$ . 
+
+##### Example 1: Binomial example {-}
+
+Let $y \sim Bin(n, \theta)$ and $\theta \sim Be(a, b)$, then $\theta\mid y \sim Be(a + y, b + n - y)$ and the posterior mode is $\hat\theta = \frac{y'}{n'} = \frac{a + y - 1}{a + b + n - 2}$. Thus $I(\hat\theta) = \frac{n'}{\hat\theta(1 - \hat\theta)}$ and $p(\theta\mid y) \stackrel{d}{\approx } N\left(\hat\theta, \frac{\hat\theta(1 - \hat\theta)}{n'} \right)$. 
+
+Recall that $\hat\theta_{MLE} = y/n$. The following estimators are all consistent 
+
++ Posterior mean: $\frac{a + y}{a + b + n}$ 
++ Posterior median: $\approx \frac{a + y - 1/3}{a + b + n - 2/3}$ for $a, b > 1$ 
++ Posterior mode: $\frac{a + y - 1}{a + b + n - 2}$ 
+
+since as $n \rightarrow \infty$, these all converage to $\hat\theta_{MLE} = y/n$. 
+
+##### Example 2: Normal example {-}
+
+Consider $Y_i \stackrel{iid}{\sim} N(\theta, 1)$ with known and prior $\theta \sim N(c, 1)$, then $\theta\mid y \sim N\left(\frac{1}{n+1}c + \frac{n}{n+1}\bar y, \frac{1}{n+1} \right)$.  
+
+Recall that $\hat\theta_{MLE} = \bar y$, and the posterior mean coverages to the MLE. 
+
+
+
+##### Asymptotic normality {-}
+
+For large $n$, we have 
+$$
+\log p(\theta \mid y) \approx \log p(\hat{\theta} \mid y)-\frac{1}{2}(\theta-\hat{\theta})^{\top}\left[n \mathrm{I}\left(\theta_{0}\right)\right](\theta-\hat{\theta})
+$$
+where $\hat\theta$ is the posterior mode. Since $\hat\theta \rightarrow \theta_0$  and $I(\hat\theta) \rightarrow I(\theta_0)$ as $n \rightarrow \infty$, we have 
+$$
+p(\theta\mid y )\propto \exp\left(-\frac{1}{2}(\theta - \hat\theta)^T\left[n I(\hat\theta) \right] (\theta - \hat\theta) \right).
+$$
+Thus,  $\theta\mid y \stackrel{d}{\rightarrow} N\left(\hat\theta, \frac{1}{n} I(\hat\theta)^{-1}  \right)$, i.e. the posterior distribution is asymptotically normal. 
+
+Suppose that $f(y)$ the true sampling distribution does not correspond to $p(y\mid \theta)$  for some $\theta = \theta_0$. Then the posterior $p(\theta\mid y)$ converges to a $\theta_0$ that is the smallest in **Kullback-Leibler divergence** to the true $f(y)$ where
+$$
+K L(f(y) \| p(y \mid \theta))=E\left[\log \left(\frac{f(y)}{p(y \mid \theta)}\right)\right]=\int \log \left(\frac{f(y)}{p(y \mid \theta)}\right) f(y) d y
+$$
+That is, we do about the best that we can given that we have assumed the wrong sampling distribution $p(y \mid \theta)$.

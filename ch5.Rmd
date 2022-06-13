@@ -1,0 +1,242 @@
+# Hierarchical Model
+
+Consider the following model: 
+$$
+\begin{aligned}
+y_i & \stackrel{ind}{\sim} p(y\mid \theta_i)\\ 
+\theta_i & \stackrel{ind}{\sim} p(\theta\mid \phi) \\
+\phi &\sim p(\phi)
+\end{aligned}
+$$
+This is a hierarchical or multilevel model. 
+
+The joint posterior distribution can be decomposed via 
+$$
+p(\theta, \phi\mid y) = p(\theta\mid \phi, y)p(\phi \mid y)
+$$
+where 
+
++ $p(\theta\mid \phi, y) \propto p(y\mid \theta)p(\theta\mid \phi)= \prod_{i = 1}^n p(y_i \mid \theta_i)p(\theta_i \mid \phi) = \prod_{i = 1}^n p(\theta_i \mid \phi, y_i)$
++ $p(\phi \mid y) \propto p(y\mid \phi) p(\phi) $
++ $p(y \mid \phi) = \int p(y\mid \theta) p(\theta\mid \phi)d\theta = \prod_{i = 1}^n \int p(y_i\mid \theta_i)p(\theta_i\mid \phi) d\theta_i = \prod_{i = 1}^n p(y_i \mid \phi)$
+
+##### Example: Beta-Binomial {-}
+
+Consider 
+$$
+Y_i \stackrel{ind}{\sim} Bin(n_i, \theta_i) \quad \theta_i \stackrel{ind}{\sim} Be(\alpha, \beta) \quad \alpha, \beta \sim p(\alpha, \beta)
+$$
+In this example, $\phi = (\alpha, \beta)$. $p(\theta \mid \alpha, \beta, y) = \prod_{i = 1}^n Be(\theta_i\mid \alpha + y_i, \beta + n_i - y_i)$. The marginal posterior for $\alpha, \beta$ is $p(\alpha, \beta \mid y) \propto p(y\mid \alpha, \beta) p(\alpha, \beta)$ with 
+$$
+\begin{aligned} 
+p(y\mid \alpha, \beta) &= \prod_{i = 1}^n \int p(y_i\mid \theta_i) p(\theta_i\mid \alpha, \beta) d\theta_i \\ 
+& = \prod_{i = 1}^n \int Bin(y_i\mid n_i, \theta_i)Be(\theta_i \mid \alpha, \beta)d\theta_i \\ 
+& = \prod_{i = 1}^n {n_i\choose y_i}\frac{B(\alpha + y_i , \beta + n_i - y_i)}{B(\alpha, \beta)}
+\end{aligned}
+$$
+Thus, $y_i \mid \alpha, \beta \stackrel{ind}{\sim} \text{Beta-binomial}(n_i, \alpha, \beta)$.
+
+> $\alpha$: prior successes and $\beta$: prior failures
+
+A more natural parameterization is 
+
++ prior expectation: $\mu = \frac{\alpha}{\alpha + \beta}$ 
++ prior sample size $\eta = \alpha + \beta$ 
+
+We can assume the mean ($\mu$) and the size ($\eta$) are independent a *priori*. For example, suppose $\mu \sim Be(20, 30)$ and $\eta \sim LN(0, 3^2)$ where $LN$ is short for log-normal distribution. 
+
+```R
+model_informative_prior = "
+data {
+int<lower=0> N; // data
+int<lower=0> n[N] ;
+int<lower=0> y[N];
+real<lower=0> a; // prior
+real<lower=0> b;
+real<lower=0> C;
+real m;
+}
+parameters {
+real<lower=0, upper=1> mu;
+real<lower=0> eta;
+real<lower=0, upper=1> theta[N];
+}
+transformed parameters {
+real<lower=0> alpha;
+real<lower=0> beta;
+alpha = eta* mu;
+beta = eta*(1-mu) ;
+}
+model {
+mu ~ beta(a,b);
+eta ~ lognormal(m,C);
+
+# implicit joint distributions
+theta ~ beta(alpha,beta);
+y ~ binomial(n, theta);
+}
+"
+
+a = 20; b = 30; m = 0; C = 3
+n = 1e4
+prior_draws = mutate(data.frame(mu = rbeta(n, a, b), eta = rlnorm(n, m, C)),
+                     alpha = eta* mu, beta = eta*(1-mu))
+
+dat = list(y=d$made, n=d$attempts, N=nrow(d), a=a, b=b, m=m, C=C)
+m = stan_model(model_code=model_informative_prior)
+r = sampling(m, dat, c("mu", "eta", "alpha" "beta", "theta"), iter = 10000)
+
+plot(r, pars = c('eta', 'alpha', 'beta'))
+plot(r, pars = c('mu', 'theta'))
+```
+
+ 
+
+In the *Bayesian Data Analysis* page 110, serveral priors are discussed: 
+
++ $(\log(\alpha/\beta), \log(\alpha + \beta)) \propto 1$ leads to an improper posterior
++ $(\log(\alpha/\beta),  \log(\alpha + \beta)) \sim Unif([-10^{10}, 10^{10}]\times [-10^{10}, 10^{10}])$ while proper and seemingly vague is a very informative prior 
++ $(\log(\alpha, \beta), \log(\alpha+\beta))\propto \alpha\beta(\alpha+\beta)^{-5/2}$ while leads to a proper posterior and is equivalent to $p(\alpha, \beta) \propto (\alpha + \beta)^{-5/2}$ 
+
+
+
+```R
+# Stan code for default prior 
+model_default_prior = "
+data {
+int<lower=0> N;
+int<lower=0> n [N];
+int<lower=0> y [N];
+}
+parameters {
+real<lower=0> alpha;
+real<lower=0> beta;
+real<lower=0, upper=1> theta[N];
+}
+model {
+# default prior
+target += -5 * log(alpha+beta)/2;
+
+# implicit joint distributions
+theta ~ beta(alpha, beta) ;
+y ~ binomial(n, theta);
+}
+"
+```
+
+
+
+An alternative to jointly sampling $\theta, \alpha, \beta$ is to
+
+1. sample $\alpha, \beta \sim p(\alpha, \beta\mid y)$, and then 
+2. sample $\theta \stackrel{ind}{\sim} p(\theta_i \mid \alpha, \beta, y_i) \stackrel{d}{=} Be(\alpha + y_i, \beta + n_i  - y_i)$. 
+
+The marginal posterior for $\alpha, \beta$ is 
+$$
+p(\alpha, \beta\mid y) \propto p(y\mid \alpha, \beta)p(\alpha, \beta) = \left[\prod_{i = 1}^n \text{Beta-Binomial}(y_i \mid n_i, \alpha, \beta) \right]p(\alpha, \beta)
+$$
+
+```R
+# Marginalized (integrated) theta out of the model
+model_marginalized = "
+data {
+int<lower=0> N;
+int<lower=0> n[N];
+int<lower=0> y[N];
+}
+parameters {
+real<lower=0> alpha;
+real<lower=0> beta;
+}
+model {
+target += -5 * log(alpha+beta)/2;
+y ~ beta_binomial(n, alpha, beta);
+}
+"
+```
+
+
+
+The forth approach: 
+
+```R
+# Stan Beta-Binomial
+model_seasons = "
+data {
+int<lower=0> N; int<lower=0> n[N]; int<lower=0> y[N] ;
+real<lower=0> a; real<lower=0> b; real<lower=0> C; real m;
+}
+parameters {
+real<lower=0, upper=1> mu;
+real<lower=0> eta;
+}
+transformed parameters {
+real<lower=0> alpha;
+real<lower=0> beta;
+alpha = eta * mu;
+beta = eta * (1-mu) ;
+}
+model {
+mu ~ beta(a,b);
+eta ~ lognormal(m,C);
+y ~ beta_binomial(n, alpha, beta);
+}
+generated quantities {
+real<lower=0, upper=1> theta[N] ;
+for (i in 1:N) 
+	theta [i] = beta_rng(alpha+y[i], beta + n[i]-y[i]);
+}
+"
+```
+
+**Exchangeability**: The set $Y_1, Y_2, \ldots, Y_n$ is exchangeable if the joint probabilty $p(y_1, \ldots, y_n)$ is invariant to permutation of the indices. That is, for any permutation $\pi$, $p(y_1, \ldots, y_n) = p(y_{\pi_1}, \ldots, y_{\pi_n})$.   
+
+> Theorem 1: All independent and identically distributed random variables are exchangeable. 
+>
+> Theorem 2 (de Finetti's Theorem): A sequence of random variables $(y_1, y_2, \ldots)$ is  infinitely exchangeable iff, for all $n$, 
+> $$
+> p(y_1, \ldots, y_n) = \int \prod_{i = 1}^n p(y_i\mid \theta)P(d\theta)
+> $$
+> for some measure $P$ on $\theta$. 
+
+Although hierarchical models are typically written using the conditional independence notation above, the assumptions underlying the model are exchangeability and functional forms for the priors.
+$$
+y_i \stackrel{ind}{\sim} p(y\mid \theta_i) \quad \theta_i \stackrel{ind}{\sim} p(\theta\mid \phi) \quad \phi \sim p(\phi)
+$$
+
+##### Example 2: Normal hierarchical model {-}
+
+Suppose we have the following model: 
+$$
+\begin{aligned}
+y_{ij} & \sim N(\theta_i, \sigma^2)\\
+\theta_i & \sim N(\mu, \tau^2)
+\end{aligned}
+$$
+with $j = 1,\ldots, n_i$, $i = 1, \ldots, I$  and $n = \sum_{i = 1}^I n_i$. We assume $\sigma^2 = s^2$ is known and $p(\mu, \tau^2) \propto p(\tau)$, i.e. assume an improper uniform prior on $\mu$. 
+
+(Section 5.4 in *Bayesian Data Analysis*) Let $\bar y_{i.} = \frac{1}{n_i} \sum_{i = 1}^{n_i} y_{ij}$ and $s^2_i = s^2/n_{i}$, then 
+$$
+\left\{\begin{aligned} p(\tau \mid y) & \propto p(\tau) V_{\mu}^{1 / 2} \prod_{i=1}^{\mathrm{I}}\left(s_{i}^{2}+\tau^{2}\right)^{-1 / 2} \exp \left(-\frac{\left(\bar{y}_{i}-\hat{\mu}\right)^{2}}{2\left(s_{i}^{2}+\tau^{2}\right)}\right) \\ \mu \mid \tau, y & \sim N\left(\hat{\mu}, V_{\mu}\right) & \\ \theta_{i} \mid \mu, \tau, y & \sim N\left(\hat{\theta}_{i}, V_{i}\right) & \\ 
+\end{aligned}\right.
+$$
+with 
+$$
+V_{\mu}^{-1} =\sum_{j=1}^{J} \frac{1}{s_{i}^{2}+\tau^{2}}  \quad \hat{\mu}=V_{\mu}\left(\sum_{i=1}^{\mathrm{I}} \frac{\bar{y}_{i}}{s_{i}^{2}+\tau^{2}}\right) \\ V_{i}^{-1} =\frac{1}{s_{i}^{2}}+\frac{1}{\tau^{2}} \quad \hat{\theta}_{i} =V_{i}\left(\frac{\bar{y}_{i}}{s_{i}^{2}}+\frac{\mu}{\tau^{2}}\right) 
+$$
+One choice for $p(\tau)$ is $Ca^+(0, 1)$ 
+
+There are some alternative distributions for $\theta_i$: 
+
++ Heavy-tailed: $\theta_i \sim t_{\nu}(\mu, \tau^2)$ 
++ Peak at zero: $\theta_i \sim Laplace(\mu, \tau^2)$ 
++ Point mass at zero: $\theta_i \sim \pi\delta_0 + (1 - \pi)N(\mu, \tau^2)$ 
+
+
+
+Hierarchical models
+
++ allow the data to inform us about similarities across groups
++ provide data driven shrinkage toward a grand mean
+  + lots of shrinkage when means are similar
+  + little shrinkage when means are different

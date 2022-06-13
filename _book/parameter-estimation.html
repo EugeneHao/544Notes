@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 Parameter Estimation | 544 Notes</title>
+  <meta name="description" content="Chapter 2 Parameter Estimation | 544 Notes" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 Parameter Estimation | 544 Notes" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 Parameter Estimation | 544 Notes" />
+  
+  
+  
+
+<meta name="author" content="JHao Sun" />
+
+
+<meta name="date" content="2022-06-12" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="probabilty-and-inference.html"/>
+<link rel="next" href="multiparameter-models.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="1" data-path="probabilty-and-inference.html"><a href="probabilty-and-inference.html"><i class="fa fa-check"></i><b>1</b> Probabilty and Inference</a></li>
+<li class="chapter" data-level="2" data-path="parameter-estimation.html"><a href="parameter-estimation.html"><i class="fa fa-check"></i><b>2</b> Parameter Estimation</a></li>
+<li class="chapter" data-level="3" data-path="multiparameter-models.html"><a href="multiparameter-models.html"><i class="fa fa-check"></i><b>3</b> Multiparameter Models</a></li>
+<li class="chapter" data-level="4" data-path="data-asymptotics.html"><a href="data-asymptotics.html"><i class="fa fa-check"></i><b>4</b> Data Asymptotics</a></li>
+<li class="chapter" data-level="5" data-path="hierarchical-model.html"><a href="hierarchical-model.html"><i class="fa fa-check"></i><b>5</b> Hierarchical Model</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">544 Notes</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="parameter-estimation" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Parameter Estimation<a href="parameter-estimation.html#parameter-estimation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Suppose <span class="math inline">\(Y \sim Bin(n, \theta)\)</span>, and <span class="math inline">\(\theta \sim Be(a, b)\)</span>, then <span class="math inline">\(p(\theta\mid y) \propto \theta^{a + y - 1}(1-\theta)^{b+n-y-1}\)</span>. Thus <span class="math inline">\(\theta\mid y \sim Be(a+y, b+n-y)\)</span>.</p>
+<p>A <span class="math inline">\(100(1 - \alpha)\%\)</span> <strong>credible interval</strong> is any interval in the posterior that contains the parameter with probability <span class="math inline">\((1- \alpha)\)</span>. Define a loss function <span class="math inline">\(L(\theta, \hat\theta) = -U(\theta, \hat\theta)\)</span> where <span class="math inline">\(\theta\)</span> is the parameter of interest and <span class="math inline">\(\hat\theta = \hat\theta(y)\)</span> is the estimator of <span class="math inline">\(\theta\)</span>.</p>
+<p>Find the estimator that minimizes the expected loss: <span class="math inline">\(\hat\theta_{Bayes} = \arg\min_{\hat\theta}E\left[ L(\theta, \hat\theta)\mid y\right]\)</span>. Common estimators are:</p>
+<ul>
+<li>Mean: <span class="math inline">\(\hat\theta_{Bayes} = E(\theta\mid y)\)</span> minimizes <span class="math inline">\(L(\theta, \hat\theta) = (\theta, \hat\theta)^2\)</span>.</li>
+<li>Median: <span class="math inline">\(\int_{\hat\theta}^\infty p(\theta\mid y) d\theta = \frac{1}{2}\)</span> minimizes <span class="math inline">\(L(\theta, \hat\theta) = |\theta - \hat\theta |\)</span>.</li>
+<li>Mode: <span class="math inline">\(\hat\theta_{Bayes} = \arg\max_{\theta} p(\theta\mid y)\)</span> is obtained by minimizing <span class="math inline">\(L(\theta, \hat\theta) = -I(|\theta- \hat\theta) &lt; \epsilon)\)</span> as <span class="math inline">\(\epsilon \rightarrow 0\)</span>, also called <strong>maximum a posterior (MAP)</strong> estimator.</li>
+</ul>
+<p>A <span class="math inline">\(100(1- \alpha)\%\)</span> credible interval is any interval <span class="math inline">\((L, U)\)</span> such that <span class="math inline">\(1 - \alpha = \int_{L}^U p(\theta\mid y) d\theta\)</span>. Some typical intervals are</p>
+<ul>
+<li>Equal-tailed: <span class="math inline">\(\alpha/2 = \int_{-\infty}^L p(\theta\mid y)d\theta = \int_{U}^\infty p(\theta\mid y)d\theta\)</span>.</li>
+<li>One-sided: either <span class="math inline">\(L = -\infty\)</span> or <span class="math inline">\(U = \infty\)</span></li>
+<li><strong>Highest posterior density (HPD)</strong>: <span class="math inline">\(p(L\mid y) = p(U\mid y)\)</span></li>
+</ul>
+<p>A <strong>prior probability distribution</strong>, often called simply the prior, of an uncertain quantity <span class="math inline">\(\theta\)</span> is the probability distribution that would express one’s uncertainty about <span class="math inline">\(\theta\)</span> before the “data” is taken into account.</p>
+<p>A prior <span class="math inline">\(p(\theta)\)</span> is <strong>conjugate</strong> if for <span class="math inline">\(p(\theta) \in \mathcal{P}\)</span> and <span class="math inline">\(p(y\mid \theta) \in \mathcal{F}\)</span>, <span class="math inline">\(p(\theta\mid y) \in \mathcal{P}\)</span> where <span class="math inline">\(\mathcal{F}\)</span> and $ are families of distributions.</p>
+<blockquote>
+<p>Example: the beta distribution (<span class="math inline">\(\mathcal{P}\)</span>) is conjugate to the binomial distribution
+Discrete priors are conjugate.
+Mixture of conjugate priors are conjugate.</p>
+</blockquote>
+<p>A <strong>natural conjugate prio</strong>r is a conjugate prior that has the same functional form as the likelihood.</p>
+<blockquote>
+<p>Example: the beta distribution is a natural conjugate prior since <span class="math inline">\(p(\theta) \propto \theta^{a-1}(1-\theta)^{b-1}\)</span> and <span class="math inline">\(L(\theta) \propto \theta^y(1-\theta)^{n-y}\)</span>.</p>
+</blockquote>
+<p><strong>Mixture of conjugate priors</strong>: Suppose <span class="math inline">\(\theta \sim \sum_{i = 1}^I p_ip_i(\theta)\)</span>, <span class="math inline">\(\sum_{i=1}^I p_i = 1\)</span> and <span class="math inline">\(p_i(y) = \int p(y\mid \theta) p_i(\theta)d\theta\)</span>, then <span class="math inline">\(\theta\mid y \sim \sum_{i=1}^I p_i&#39;p_i(\theta\mid y)\)</span>, <span class="math inline">\(p_i&#39; \propto p_ip_i(y)\)</span> where <span class="math inline">\(p_i(\theta\mid y) = p(y \mid \theta)p_i(\theta)/p_i(y)\)</span>.</p>
+<blockquote>
+<p>Example: <span class="math inline">\(Y \sim Bin(n, \theta)\)</span>, <span class="math inline">\(\theta \sim pBe(a_1, b_1) + (1-p)Be(a_2, b_2)\)</span>, then
+<span class="math display">\[
+\theta\mid y \sim p&#39;Be(a_1 + y, b_1 + n - y) + (1 - p&#39;)Be(a_2 + y, b_2 + n - y)
+\]</span>
+with <span class="math inline">\(p&#39; = \frac{pp_1(y)}{pp_1(y) + (1-p)p_2(y)}\)</span>, <span class="math inline">\(p_i(y) = {n \choose y} \frac{Beta(a_i + y, b_i + n - y)}{Beta(a_i, b_i)}\)</span>.</p>
+</blockquote>
+<p><img src="/Users/sunhao/Dropbox/Markdown/Class%20Note/STAT544/fig/ch2fig1.png" style="zoom:30%;" /></p>
+<p>A <strong>default prior</strong> is used when a data analyst is unable or unwilling to specify an informative prior distribution.</p>
+<blockquote>
+<p>Suppose we use <span class="math inline">\(\phi = \log (\theta/(1-\theta))\)</span>, the log odds of the parameter, and set <span class="math inline">\(p(\phi) \propto 1\)</span>, then the implied prior on <span class="math inline">\(\theta\)</span> is
+<span class="math display">\[
+\begin{aligned}
+p_{\theta}(\theta) \propto &amp; 1\left|\frac{d}{d \theta} \log (\theta /[1-\theta])\right| \\
+&amp;=\frac{1-\theta}{\theta}\left[\frac{1}{1-\theta}+\frac{\theta}{[1-\theta]^{2}}\right] \\
+&amp;=\frac{1-\theta}{\theta}\left[\frac{[1-\theta]+\theta}{[1-\theta]^{2}}\right] \\
+\rightarrow \quad &amp;=\theta^{-1}[1-\theta]^{-1}
+\end{aligned}
+\]</span>
+a <span class="math inline">\(Be(0, 0)\)</span> if that were a proper distribution, and is different from setting <span class="math inline">\(p(\theta) \propto 1\)</span> which results in the <span class="math inline">\(Be(1,1)\)</span> prior.</p>
+</blockquote>
+<p><strong>Jeffreys prior</strong> is a prior that is invariant to parameterization and is obtained via
+<span class="math display">\[
+p(\theta) \propto \sqrt{\text{det} \space \mathcal{I}(\theta)}
+\]</span>
+where <span class="math inline">\(\mathcal{I}(\theta)\)</span> is the Fisher information.</p>
+<blockquote>
+<p>Example: for a binomial distribution <span class="math inline">\(\mathcal{I}(\theta) = \frac{n}{\theta(1-\theta)}\)</span> so <span class="math inline">\(p(\theta) \propto \theta^{-1/2} (1-\theta)^{-1/2}\)</span>.</p>
+</blockquote>
+<p><strong>Improper prior</strong>: An unnormalized density, <span class="math inline">\(f(\theta)\)</span>, is proper if <span class="math inline">\(\int f(\theta)d\theta = c &lt; \infty\)</span>, and otherwise it is improper.</p>
+<blockquote>
+<p>Example: <span class="math inline">\(Be(0, 0)\)</span> is an improper distribution. Suppose <span class="math inline">\(Y \sim Bin(n, \theta)\)</span>, the posterior <span class="math inline">\(\theta\mid y \sim Be(y, n-y)\)</span> is proper if <span class="math inline">\(0 &lt; y &lt; n\)</span>.</p>
+</blockquote>
+<div id="normal-distribution" class="section level5 unnumbered hasAnchor">
+<h5>Normal Distribution<a href="parameter-estimation.html#normal-distribution" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>Thm: If <span class="math inline">\(Y_i \stackrel{iid}{\sim} N(\mu, s^2)\)</span> (<span class="math inline">\(s^2\)</span> is known), Jeffreys prior for <span class="math inline">\(\mu\)</span> is <span class="math inline">\(p(\mu) \propto 1\)</span> and the posterior is
+<span class="math display">\[
+p(\mu \mid y) \propto \exp\left(-\frac{1}{2s^2/n} [\mu^2 - 2\mu\bar y] \right) \sim N(\bar y, s^2/n)
+\]</span>
+The natural conjugate prior is <span class="math inline">\(\mu \sim N(m, C)\)</span> and the posterior <span class="math inline">\(\mu\mid y \sim N(m&#39;, C&#39;)\)</span> where <span class="math inline">\(C&#39; = [\frac{1}{C} + \frac{n}{s^2}]^{-1}\)</span> and <span class="math inline">\(m&#39; = C&#39;[\frac{m}{C} + \frac{n}{s^2}\bar y]\)</span>.</p>
+<blockquote>
+<ul>
+<li>The posterior precision is the sum of the prior and observation precisions</li>
+<li>The posterior mean is a precision weighted average of the prior and data.</li>
+<li>Jeffrey prior/posterior are the limits of the conjugate prior/posterior as <span class="math inline">\(C \rightarrow \infty\)</span>, i.e. <span class="math inline">\(\lim_{C\rightarrow \infty} N(m, C) \stackrel{d}{\rightarrow} \propto 1\)</span> and <span class="math inline">\(\lim_{C \rightarrow \infty} N(m&#39;, C&#39;) \stackrel{d}{\rightarrow} N(\bar y, s^2/n)\)</span>.</li>
+</ul>
+</blockquote>
+<p>Thm: If <span class="math inline">\(Y_i \stackrel{iid}{\sim} N(m, \sigma^2)\)</span> (<span class="math inline">\(m\)</span> is known), Jeffery prior for <span class="math inline">\(\sigma^2\)</span> is <span class="math inline">\(p(\sigma^2) \propto 1/\sigma^2\)</span> and the posterior is
+<span class="math display">\[
+p(\sigma^2\mid y) \propto (\sigma^2)^{-n/2-1}\exp\left(-\frac{1}{2\sigma^2}\sum_{i=1}^n [y_i - m]^2 \right) \sim IG(n/2, \sum_{i=1}^n [y_i - m]^2).
+\]</span>
+The natural conjugate prior is <span class="math inline">\(\sigma^2 \sim IG(a, b)\)</span> and the posterior <span class="math inline">\(\sigma\mid y \sim IG(a + n/2, b + \sum_{i=1}^n [y_i - m]^2/2)\)</span>.</p>
+</div>
+<div id="jags" class="section level5 unnumbered hasAnchor">
+<h5>JAGS<a href="parameter-estimation.html#jags" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="parameter-estimation.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Y ~ Bin(n, theta), theta ~ Be(1, 1), we observe Y = 3 successes out of 10 attempts</span></span>
+<span id="cb1-2"><a href="parameter-estimation.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rjags)</span>
+<span id="cb1-3"><a href="parameter-estimation.html#cb1-3" aria-hidden="true" tabindex="-1"></a>model <span class="ot">=</span> <span class="st">&quot;</span></span>
+<span id="cb1-4"><a href="parameter-estimation.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="st">model</span></span>
+<span id="cb1-5"><a href="parameter-estimation.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="st">{</span></span>
+<span id="cb1-6"><a href="parameter-estimation.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="st">y ~ dbin(theta,n)   # notice p then n</span></span>
+<span id="cb1-7"><a href="parameter-estimation.html#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="st">theta ~ dbeta(a,b)</span></span>
+<span id="cb1-8"><a href="parameter-estimation.html#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="st">}&quot;</span></span>
+<span id="cb1-9"><a href="parameter-estimation.html#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="parameter-estimation.html#cb1-10" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> <span class="fu">list</span>(<span class="at">n=</span><span class="dv">10</span>, <span class="at">y=</span><span class="dv">3</span>, <span class="at">a=</span><span class="dv">1</span>, <span class="at">b=</span><span class="dv">1</span>)</span>
+<span id="cb1-11"><a href="parameter-estimation.html#cb1-11" aria-hidden="true" tabindex="-1"></a>m <span class="ot">=</span> <span class="fu">jags.model</span>(<span class="fu">textConnection</span>(model), dat)</span>
+<span id="cb1-12"><a href="parameter-estimation.html#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="parameter-estimation.html#cb1-13" aria-hidden="true" tabindex="-1"></a>r <span class="ot">=</span> <span class="fu">coda.samples</span> (m, <span class="st">&quot;theta&quot;</span>, <span class="at">n.iter=</span><span class="dv">1000</span>)</span>
+<span id="cb1-14"><a href="parameter-estimation.html#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(r)</span>
+<span id="cb1-15"><a href="parameter-estimation.html#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(r)</span></code></pre></div>
+</div>
+<div id="stan" class="section level5 unnumbered hasAnchor">
+<h5>Stan<a href="parameter-estimation.html#stan" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="parameter-estimation.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstan)</span>
+<span id="cb2-2"><a href="parameter-estimation.html#cb2-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">=</span> <span class="st">&quot;</span></span>
+<span id="cb2-3"><a href="parameter-estimation.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="st">data {</span></span>
+<span id="cb2-4"><a href="parameter-estimation.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="st">int&lt;lower=0&gt; n; // define range and type</span></span>
+<span id="cb2-5"><a href="parameter-estimation.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="st">int&lt;lower=0&gt; a; // and notice semicolons</span></span>
+<span id="cb2-6"><a href="parameter-estimation.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="st">int&lt;lower=0&gt; b;</span></span>
+<span id="cb2-7"><a href="parameter-estimation.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="st">int&lt;lower=0, upper=n&gt; y;</span></span>
+<span id="cb2-8"><a href="parameter-estimation.html#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb2-9"><a href="parameter-estimation.html#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="st">parameters {</span></span>
+<span id="cb2-10"><a href="parameter-estimation.html#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="st">real&lt;lower=0, upper=1&gt; theta;</span></span>
+<span id="cb2-11"><a href="parameter-estimation.html#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb2-12"><a href="parameter-estimation.html#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="st">model {</span></span>
+<span id="cb2-13"><a href="parameter-estimation.html#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="st">y ~ binomial(n, theta) ;</span></span>
+<span id="cb2-14"><a href="parameter-estimation.html#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="st">theta ~ beta(a, b) ;</span></span>
+<span id="cb2-15"><a href="parameter-estimation.html#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb2-16"><a href="parameter-estimation.html#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span></span>
+<span id="cb2-17"><a href="parameter-estimation.html#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="parameter-estimation.html#cb2-18" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> <span class="fu">list</span>(<span class="at">n=</span><span class="dv">10</span>, <span class="at">y=</span><span class="dv">3</span>, <span class="at">a=</span><span class="dv">1</span>, <span class="at">b=</span><span class="dv">1</span>)</span>
+<span id="cb2-19"><a href="parameter-estimation.html#cb2-19" aria-hidden="true" tabindex="-1"></a>m <span class="ot">=</span> <span class="fu">stan_model</span>(<span class="at">model_code =</span> model) <span class="co"># Only needs to be done once</span></span>
+<span id="cb2-20"><a href="parameter-estimation.html#cb2-20" aria-hidden="true" tabindex="-1"></a>r <span class="ot">=</span> <span class="fu">sampling</span>(m, <span class="at">data =</span> dat)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="parameter-estimation.html#cb3-1" aria-hidden="true" tabindex="-1"></a>r</span></code></pre></div>
+<pre><code>## Inference for Stan model: 7f934cc8d471003538635fa74104a81a.
+## 4 chains, each with iter=2000; warmup=1000; thin=1; 
+## post-warmup draws per chain=1000, total post-warmup draws=4000.
+## 
+##        mean se_mean   sd   2.5%   25%   50%   75% 97.5% n_eff Rhat
+## theta  0.33    0.00 0.13   0.11  0.23  0.32  0.42  0.60  1642    1
+## lp__  -8.16    0.02 0.73 -10.18 -8.33 -7.88 -7.69 -7.64  1663    1
+## 
+## Samples were drawn using NUTS(diag_e) at Sun Jun 12 20:18:59 2022.
+## For each parameter, n_eff is a crude measure of effective sample size,
+## and Rhat is the potential scale reduction factor on split chains (at 
+## convergence, Rhat=1).</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="parameter-estimation.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(r)</span></code></pre></div>
+<pre><code>## ci_level: 0.8 (80% intervals)</code></pre>
+<pre><code>## outer_level: 0.95 (95% intervals)</code></pre>
+<p><img src="_main_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="probabilty-and-inference.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="multiparameter-models.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/ch2.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
