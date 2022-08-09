@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 7 Bayesian Hypothesis Testing | 544 Notes</title>
+  <meta name="description" content="Chapter 7 Bayesian Hypothesis Testing | 544 Notes" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 7 Bayesian Hypothesis Testing | 544 Notes" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 7 Bayesian Hypothesis Testing | 544 Notes" />
+  
+  
+  
+
+<meta name="author" content="JHao Sun" />
+
+
+<meta name="date" content="2022-08-09" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="model-checking.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="1" data-path="probabilty-and-inference.html"><a href="probabilty-and-inference.html"><i class="fa fa-check"></i><b>1</b> Probabilty and Inference</a></li>
+<li class="chapter" data-level="2" data-path="parameter-estimation.html"><a href="parameter-estimation.html"><i class="fa fa-check"></i><b>2</b> Parameter Estimation</a></li>
+<li class="chapter" data-level="3" data-path="multiparameter-models.html"><a href="multiparameter-models.html"><i class="fa fa-check"></i><b>3</b> Multiparameter Models</a></li>
+<li class="chapter" data-level="4" data-path="data-asymptotics.html"><a href="data-asymptotics.html"><i class="fa fa-check"></i><b>4</b> Data Asymptotics</a></li>
+<li class="chapter" data-level="5" data-path="hierarchical-model.html"><a href="hierarchical-model.html"><i class="fa fa-check"></i><b>5</b> Hierarchical Model</a></li>
+<li class="chapter" data-level="6" data-path="model-checking.html"><a href="model-checking.html"><i class="fa fa-check"></i><b>6</b> Model Checking</a></li>
+<li class="chapter" data-level="7" data-path="bayesian-hypothesis-testing.html"><a href="bayesian-hypothesis-testing.html"><i class="fa fa-check"></i><b>7</b> Bayesian Hypothesis Testing</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">544 Notes</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="bayesian-hypothesis-testing" class="section level1 hasAnchor" number="7">
+<h1><span class="header-section-number">Chapter 7</span> Bayesian Hypothesis Testing<a href="bayesian-hypothesis-testing.html#bayesian-hypothesis-testing" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="prior-probabilities-on-simple-hypotheses" class="section level5 unnumbered hasAnchor">
+<h5>Prior probabilities on simple hypotheses<a href="bayesian-hypothesis-testing.html#prior-probabilities-on-simple-hypotheses" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>Let <span class="math inline">\(Y \sim p(y\mid \theta)\)</span> and <span class="math inline">\(H_j: \theta = \theta_j\)</span> for <span class="math inline">\(j = 1, \ldots, J\)</span>. Treat this as a discrete prior on the <span class="math inline">\(\theta_j\)</span>, i.e. <span class="math inline">\(P(\theta = \theta_j) = p_j\)</span>.</p>
+<p>The posterior is
+<span class="math display">\[
+P(\theta = \theta_j\mid y) = \frac{p_jp(y\mid \theta_j)}{\sum_{k = 1}^J p_kp(y\mid \theta_k)} \propto p_jp(y\mid \theta_j)
+\]</span></p>
+<p>For example, suppose <span class="math inline">\(Y_i \sim Ber(\theta)\)</span> and <span class="math inline">\(P(\theta = \theta_j) = 1/11\)</span> for <span class="math inline">\(j = 0, \ldots, 10\)</span>. The posterior is
+<span class="math display">\[
+P(\theta = \theta_j \mid y) \propto \frac{1}{11}(\theta_j)^{n\bar j}(1-\theta_j)^{n(1-\bar y)}
+\]</span></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="bayesian-hypothesis-testing.html#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">13</span>; y <span class="ot">=</span> <span class="fu">rbinom</span>(n,<span class="dv">1</span>,.<span class="dv">45</span>)</span>
+<span id="cb1-2"><a href="bayesian-hypothesis-testing.html#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="bayesian-hypothesis-testing.html#cb1-3" aria-hidden="true" tabindex="-1"></a>d <span class="ot">=</span> <span class="fu">ddply</span>(<span class="fu">data.frame</span>(<span class="at">theta =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">by=</span><span class="fl">0.1</span>), <span class="at">prior=</span><span class="dv">1</span><span class="sc">/</span><span class="dv">11</span>), </span>
+<span id="cb1-4"><a href="bayesian-hypothesis-testing.html#cb1-4" aria-hidden="true" tabindex="-1"></a>          .(theta, prior), </span>
+<span id="cb1-5"><a href="bayesian-hypothesis-testing.html#cb1-5" aria-hidden="true" tabindex="-1"></a>          <span class="cf">function</span>(x) {</span>
+<span id="cb1-6"><a href="bayesian-hypothesis-testing.html#cb1-6" aria-hidden="true" tabindex="-1"></a>            <span class="fu">data.frame</span>(<span class="at">posterior =</span> x<span class="sc">$</span>prior <span class="sc">*</span> x<span class="sc">$</span>theta<span class="sc">^</span><span class="fu">sum</span>(y)<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>x<span class="sc">$</span>theta)<span class="sc">^</span>(n<span class="sc">-</span><span class="fu">sum</span>(y)))</span>
+<span id="cb1-7"><a href="bayesian-hypothesis-testing.html#cb1-7" aria-hidden="true" tabindex="-1"></a>          })</span>
+<span id="cb1-8"><a href="bayesian-hypothesis-testing.html#cb1-8" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>posterior <span class="ot">=</span> d<span class="sc">$</span>posterior<span class="sc">/</span><span class="fu">sum</span>(d<span class="sc">$</span>posterior)</span>
+<span id="cb1-9"><a href="bayesian-hypothesis-testing.html#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">melt</span>(d, <span class="at">id.var=</span><span class="st">&quot;theta&quot;</span>), <span class="fu">aes</span>(<span class="at">x=</span>theta, <span class="at">y=</span>value, <span class="at">color=</span>variable)) <span class="sc">+</span> </span>
+<span id="cb1-10"><a href="bayesian-hypothesis-testing.html#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb1-11"><a href="bayesian-hypothesis-testing.html#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+</div>
+<div id="bayesian-hypothesis-testing-with-all-composite-hypotheses" class="section level5 unnumbered hasAnchor">
+<h5>Bayesian hypothesis testing with all composite hypotheses<a href="bayesian-hypothesis-testing.html#bayesian-hypothesis-testing-with-all-composite-hypotheses" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>Let <span class="math inline">\(Y \sim p(y\mid \theta)\)</span> and <span class="math inline">\(H_j: \theta \in (E_{j-1}, E_j]\)</span> for <span class="math inline">\(j = 1, \ldots, J\)</span>. Just calculate the area under the curve, i.e.
+<span class="math display">\[
+P(H_j\mid y) = \int_{E_j - 1}^{E_j} p(\theta\mid y)d\theta
+\]</span>
+For example, suppose <span class="math inline">\(Y_i \sim Ber(\theta)\)</span> and <span class="math inline">\(E_j = j/10\)</span> for <span class="math inline">\(j = 0, \ldots, 10\)</span>. If we assume <span class="math inline">\(\theta \sim Be(1,1)\)</span>, the posterior is
+<span class="math display">\[
+\theta \mid y \sim Be(1 + n \bar y, 1 + n[1 - \bar y])
+\]</span></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="bayesian-hypothesis-testing.html#cb2-1" aria-hidden="true" tabindex="-1"></a>Ej <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">by=</span><span class="fl">0.1</span>)</span>
+<span id="cb2-2"><a href="bayesian-hypothesis-testing.html#cb2-2" aria-hidden="true" tabindex="-1"></a>vlines <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x=</span>Ej, <span class="at">xend=</span>Ej, <span class="at">y=</span><span class="dv">0</span>, <span class="at">yend =</span> <span class="fu">dbeta</span>(Ej,<span class="dv">1</span><span class="sc">+</span><span class="fu">sum</span>(y), <span class="dv">1</span><span class="sc">+</span>n<span class="sc">-</span><span class="fu">sum</span>(y)))</span>
+<span id="cb2-3"><a href="bayesian-hypothesis-testing.html#cb2-3" aria-hidden="true" tabindex="-1"></a>heights <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x=</span>Ej[<span class="sc">-</span><span class="dv">1</span>]<span class="sc">-</span>.<span class="dv">05</span>, <span class="at">y=</span><span class="fl">0.4</span>, </span>
+<span id="cb2-4"><a href="bayesian-hypothesis-testing.html#cb2-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">label =</span> <span class="fu">round</span>(<span class="fu">diff</span>(<span class="fu">pbeta</span>(Ej,<span class="dv">1</span><span class="sc">+</span><span class="fu">sum</span>(y), <span class="dv">1</span><span class="sc">+</span>n<span class="sc">-</span><span class="fu">sum</span>(y))),<span class="dv">2</span>))</span>
+<span id="cb2-5"><a href="bayesian-hypothesis-testing.html#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="bayesian-hypothesis-testing.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(vlines, <span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">xend=</span>xend,<span class="at">y=</span>y,<span class="at">yend=</span>yend)) <span class="sc">+</span> </span>
+<span id="cb2-7"><a href="bayesian-hypothesis-testing.html#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span><span class="cf">function</span>(x) <span class="fu">dbeta</span>(x, <span class="dv">1</span><span class="sc">+</span><span class="fu">sum</span>(y), <span class="dv">1</span><span class="sc">+</span>n<span class="sc">-</span><span class="fu">sum</span>(y))) <span class="sc">+</span> </span>
+<span id="cb2-8"><a href="bayesian-hypothesis-testing.html#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>() <span class="sc">+</span></span>
+<span id="cb2-9"><a href="bayesian-hypothesis-testing.html#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">x=</span>heights<span class="sc">$</span>x, <span class="at">y=</span>heights<span class="sc">$</span>y, <span class="at">label=</span>heights<span class="sc">$</span>label) <span class="sc">+</span></span>
+<span id="cb2-10"><a href="bayesian-hypothesis-testing.html#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<div class="theorem">
+<p><span id="thm:unnamed-chunk-4" class="theorem"><strong>Theorem 7.1  </strong></span>If the prior is proper, and the data are discrete, then the posterior is always proper.</p>
+</div>
+<div class="theorem">
+<p><span id="thm:unnamed-chunk-5" class="theorem"><strong>Theorem 7.2  </strong></span>If the prior is proper and the data are continuous, then the posterior is almost always proper.</p>
+</div>
+<div class="theorem">
+<p><span id="thm:unnamed-chunk-6" class="theorem"><strong>Theorem 7.3  </strong></span>If <span class="math inline">\(p(\theta)\)</span> is improper, then <span class="math inline">\(p(y) = \int p(y\mid \theta) p(\theta)d\theta\)</span> is imporper.</p>
+</div>
+<div class="proof">
+<p><span id="unlabeled-div-1" class="proof"><em>Proof</em>. </span><span class="math display">\[\begin{aligned} \int p(y) d y &amp;=\iint p(y \mid \theta) p(\theta) d \theta d y \stackrel{T T}{=} \int p(\theta) \int p(y \mid \theta) d y d \theta \\ &amp;=\int p(\theta) d \theta \end{aligned}\]</span></p>
+</div>
+<p>To evaluate the relative plausibility of a hypothesis (model), we use the posterior model probability:
+<span class="math display">\[
+p\left(H_{j} \mid y\right)=\frac{p\left(y \mid H_{j}\right) p\left(H_{j}\right)}{p(y)}=\frac{p\left(y \mid H_{j}\right) p\left(H_{j}\right)}{\sum_{k=1}^{J} p\left(y \mid H_{k}\right) p\left(H_{k}\right)} \propto p\left(y \mid H_{j}\right) p\left(H_{j}\right)
+\]</span>
+where
+<span class="math display">\[p\left(y \mid H_{j}\right)=\int p(y \mid \theta) p\left(\theta \mid H_{j}\right) d \theta
+\]</span>
+is the marginal likelihood under model <span class="math inline">\(H_j\)</span> and <span class="math inline">\(p(\theta\mid H_j)\)</span> is the prior for parameters <span class="math inline">\(\theta\)</span> when model <span class="math inline">\(H_j\)</span> is true.</p>
+<ul>
+<li>Simple hypothesis can be considered to have a Dirac delta function for a prior, e.g. if <span class="math inline">\(H_0: \theta = \theta_0\)</span> then <span class="math inline">\(\theta\mid H_0 \sim \delta_0\)</span>. The marginal likelihood is
+<span class="math display">\[
+p\left(y \mid H_{0}\right)=\int p(y \mid \theta) p\left(\theta \mid H_{0}\right) d \theta=p\left(y \mid \theta_{0}\right) .
+\]</span></li>
+<li>Composite hypothesis have a continuous prior and thus
+<span class="math display">\[p\left(y \mid H_{j}\right)=\int p(y \mid \theta) p\left(\theta \mid H_{j}\right) d \theta
+\]</span></li>
+</ul>
+<p>If we only have two models, <span class="math inline">\(H_0\)</span> and <span class="math inline">\(H_1\)</span>, then
+<span class="math display">\[
+p\left(H_{0} \mid y\right)=\frac{p\left(y \mid H_{0}\right) p\left(H_{0}\right)}{p\left(y \mid H_{0}\right) p\left(H_{0}\right)+p\left(y \mid H_{1}\right) p\left(H_{1}\right)}=\frac{1}{1+\frac{p\left(y \mid H_{1}\right)}{p\left(y \mid H_{0}\right)} \frac{p\left(H_{1}\right)}{p\left(H_{0}\right)}}
+\]</span></p>
+<p>We define
+<span class="math display">\[
+B F\left(H_{1}: H_{0}\right)=\frac{p\left(y \mid H_{1}\right)}{p\left(y \mid H_{0}\right)}=\frac{1}{B F\left(H_{0}: H_{1}\right)}
+\]</span>
+as the <strong>Bayes Factor</strong> for model <span class="math inline">\(H_1\)</span> relative to <span class="math inline">\(H_0\)</span>.</p>
+<blockquote>
+<p>Note:
+With <span class="math inline">\(p(H_0) = p(H_1)\)</span>, the posterior probability is
+<span class="math display">\[
+    P(H_0\mid y) = \frac{1}{1 + \frac{1}{BF(H_0:H_1)}}
+\]</span></p>
+</blockquote>
+</div>
+<div id="binomial-model" class="section level5 unnumbered hasAnchor">
+<h5>Binomial Model<a href="bayesian-hypothesis-testing.html#binomial-model" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>Consider a coin flipping experiment so that <span class="math inline">\(Y_i \sim Ber(\theta)\)</span> and the null hypothesis <span class="math inline">\(H_0: \theta = 0.5\)</span> versus the alternative <span class="math inline">\(H_1: \theta \neq 0.5\)</span> and <span class="math inline">\(\theta\mid H_1 \sim Be(a, b)\)</span>. Suppose <span class="math inline">\(a, b = e\rightarrow 0\)</span>, then
+<span class="math display">\[
+B F\left(H_{0}: H_{1}\right)=\frac{0.5^{n} B e(e, e)}{Be(e+n \bar{y}, e+n - n\bar y)} \stackrel{e \rightarrow 0}{\longrightarrow} \infty \quad \text { for any } \bar{y} \in(0,1)
+\]</span></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="bayesian-hypothesis-testing.html#cb3-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">=</span> <span class="fu">expand.grid</span>(<span class="at">e=</span><span class="dv">10</span><span class="sc">^</span>(<span class="dv">0</span><span class="sc">:-</span><span class="dv">4</span>), <span class="at">ybar=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">by=</span><span class="fl">0.01</span>), <span class="at">n=</span><span class="dv">20</span>)</span>
+<span id="cb3-2"><a href="bayesian-hypothesis-testing.html#cb3-2" aria-hidden="true" tabindex="-1"></a>bf <span class="ot">=</span> <span class="cf">function</span>(n,ybar,<span class="at">a=</span><span class="dv">1</span>,<span class="at">b=</span><span class="dv">1</span>) </span>
+<span id="cb3-3"><a href="bayesian-hypothesis-testing.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">exp</span>(n<span class="sc">*</span><span class="fu">log</span>(<span class="fl">0.5</span>)<span class="sc">+</span><span class="fu">lbeta</span>(a,b)<span class="sc">-</span><span class="fu">lbeta</span>(a<span class="sc">+</span>n<span class="sc">*</span>ybar,b<span class="sc">+</span>n<span class="sc">-</span>n<span class="sc">*</span>ybar))</span>
+<span id="cb3-4"><a href="bayesian-hypothesis-testing.html#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="bayesian-hypothesis-testing.html#cb3-5" aria-hidden="true" tabindex="-1"></a>d <span class="ot">=</span> <span class="fu">ddply</span>(d, .(n,ybar,e), summarize, <span class="at">bf=</span><span class="fu">bf</span>(n,ybar,e,e))</span>
+<span id="cb3-6"><a href="bayesian-hypothesis-testing.html#cb3-6" aria-hidden="true" tabindex="-1"></a>post_prob <span class="ot">=</span> <span class="cf">function</span>(bf, <span class="at">prior_odds=</span><span class="fl">0.5</span>) </span>
+<span id="cb3-7"><a href="bayesian-hypothesis-testing.html#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span><span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span><span class="dv">1</span><span class="sc">/</span>bf<span class="sc">*</span>prior_odds)</span>
+<span id="cb3-8"><a href="bayesian-hypothesis-testing.html#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="bayesian-hypothesis-testing.html#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d, <span class="fu">aes</span>(<span class="at">x=</span>ybar, <span class="at">y=</span><span class="fu">post_prob</span>(bf), <span class="at">color=</span><span class="fu">factor</span>(e))) <span class="sc">+</span> </span>
+<span id="cb3-10"><a href="bayesian-hypothesis-testing.html#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb3-11"><a href="bayesian-hypothesis-testing.html#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;p(&quot;</span>,H[<span class="dv">0</span>],<span class="st">&quot;|y)&quot;</span>))) <span class="sc">+</span> </span>
+<span id="cb3-12"><a href="bayesian-hypothesis-testing.html#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>,<span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb3-13"><a href="bayesian-hypothesis-testing.html#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_discrete</span>(<span class="at">name=</span><span class="st">&quot;e&quot;</span>) <span class="sc">+</span></span>
+<span id="cb3-14"><a href="bayesian-hypothesis-testing.html#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="normal-example" class="section level5 unnumbered hasAnchor">
+<h5>Normal Example<a href="bayesian-hypothesis-testing.html#normal-example" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>Consider the model <span class="math inline">\(Y \sim N(\theta, 1)\)</span> and the hypothesis test</p>
+<ul>
+<li><span class="math inline">\(H_0: \theta = 0\)</span> versus</li>
+<li><span class="math inline">\(H_1: \theta \neq 0\)</span> with prior <span class="math inline">\(\theta\mid H_1 \sim N(0, C)\)</span>.</li>
+</ul>
+<p>The predictive distribution under <span class="math inline">\(H_1\)</span> is
+<span class="math display">\[
+p\left(y \mid H_{1}\right)=\int p(y \mid \theta) p\left(\theta \mid H_{1}\right) d \theta=N(y ; 0,1+C)
+\]</span>
+and the Bayes factor is
+<span class="math display">\[
+BF(H_0: H_1) = \frac{N(y; 0, 1)}{N(y; 0, 1+C)} \stackrel{C\rightarrow \infty}{\longrightarrow}\infty
+\]</span></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="bayesian-hypothesis-testing.html#cb4-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">=</span> <span class="fu">ddply</span>(<span class="fu">expand.grid</span>(<span class="at">y=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">5</span>,<span class="at">by=</span><span class="dv">1</span>), <span class="at">C=</span><span class="dv">10</span><span class="sc">^</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">4</span>,<span class="at">by=</span><span class="fl">0.1</span>)), .(y,C), summarize,</span>
+<span id="cb4-2"><a href="bayesian-hypothesis-testing.html#cb4-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">post_prob_H0 =</span> <span class="dv">1</span><span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span><span class="dv">1</span><span class="sc">/</span><span class="fu">exp</span>(<span class="fu">dnorm</span>(y,<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">log=</span><span class="cn">TRUE</span>)<span class="sc">-</span><span class="fu">dnorm</span>(y,<span class="dv">0</span>,<span class="dv">1</span><span class="sc">+</span>C,<span class="at">log=</span><span class="cn">TRUE</span>))))</span>
+<span id="cb4-3"><a href="bayesian-hypothesis-testing.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d, <span class="fu">aes</span>(<span class="fu">sqrt</span>(C), post_prob_H0, <span class="at">color=</span><span class="fu">factor</span>(y))) <span class="sc">+</span> </span>
+<span id="cb4-4"><a href="bayesian-hypothesis-testing.html#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> </span>
+<span id="cb4-5"><a href="bayesian-hypothesis-testing.html#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">expression</span>(<span class="fu">sqrt</span>(C)), <span class="at">y =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;p(&quot;</span>,H[<span class="dv">0</span>],<span class="st">&quot;|y)&quot;</span>))) <span class="sc">+</span> </span>
+<span id="cb4-6"><a href="bayesian-hypothesis-testing.html#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_discrete</span>(<span class="at">name=</span><span class="st">&quot;y&quot;</span>) <span class="sc">+</span></span>
+<span id="cb4-7"><a href="bayesian-hypothesis-testing.html#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+<div id="jeffrey-lindley-paradox" class="section level5 hasAnchor" number="7.0.0.0.1">
+<h5><span class="header-section-number">7.0.0.0.1</span> Jeffrey-Lindley Paradox<a href="bayesian-hypothesis-testing.html#jeffrey-lindley-paradox" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<div class="definition">
+<p><span id="def:unnamed-chunk-10" class="definition"><strong>Definition 7.1  </strong></span>The <strong>Jeffrey-Lindley Paradox</strong> concerns a situation when comparing two hypothesis <span class="math inline">\(H_0\)</span> and <span class="math inline">\(H_1\)</span> given data <span class="math inline">\(y\)</span> and find</p>
+<ul>
+<li>a frequentist test resul is significant leading to rejection of <span class="math inline">\(H_0\)</span>, but</li>
+<li>the posterior probability of <span class="math inline">\(H_0\)</span> is high</li>
+</ul>
+</div>
+<blockquote>
+<p>This can happen when: (1) the effect size is small; (2) <span class="math inline">\(n\)</span> is large; (3) <span class="math inline">\(H_0\)</span> is relatively precise; (4) <span class="math inline">\(H_1\)</span> is relative diffuse, and (5) the prior model odds is <span class="math inline">\(\approx\)</span> 1.</p>
+</blockquote>
+<p>Example: suppose <span class="math inline">\(n = 10000\)</span> and <span class="math inline">\(y = 4900\)</span>, the p-value is about 0.045 so we reject <span class="math inline">\(H_0\)</span> as the 0.05 level. The posterior probability of <span class="math inline">\(H_0\)</span> is <span class="math inline">\(0.96\)</span> so the probability of <span class="math inline">\(H_0\)</span> being ture is 96%.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="bayesian-hypothesis-testing.html#cb5-1" aria-hidden="true" tabindex="-1"></a>paradox <span class="ot">=</span> <span class="fu">expand.grid</span>(<span class="at">n=</span><span class="dv">10</span><span class="sc">^</span>(<span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">5</span>,<span class="at">by=</span><span class="fl">0.1</span>)), <span class="at">ybar=</span><span class="fl">0.49</span>)</span>
+<span id="cb5-2"><a href="bayesian-hypothesis-testing.html#cb5-2" aria-hidden="true" tabindex="-1"></a>pvalue <span class="ot">=</span> <span class="cf">function</span>(lrt,<span class="at">df=</span><span class="dv">1</span>) <span class="dv">1</span><span class="sc">-</span><span class="fu">pchisq</span>(<span class="sc">-</span><span class="dv">2</span><span class="sc">*</span><span class="fu">log</span>(lrt),df)</span>
+<span id="cb5-3"><a href="bayesian-hypothesis-testing.html#cb5-3" aria-hidden="true" tabindex="-1"></a>lrt <span class="ot">=</span> <span class="cf">function</span>(n,ybar) <span class="fu">exp</span>(n<span class="sc">*</span><span class="fu">log</span>(<span class="fl">0.5</span>)<span class="sc">-</span>n<span class="sc">*</span>ybar<span class="sc">*</span><span class="fu">log</span>(ybar)<span class="sc">-</span>n<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>ybar)<span class="sc">*</span><span class="fu">log</span>(<span class="dv">1</span><span class="sc">-</span>ybar))</span>
+<span id="cb5-4"><a href="bayesian-hypothesis-testing.html#cb5-4" aria-hidden="true" tabindex="-1"></a>post_prob <span class="ot">=</span> <span class="cf">function</span>(bf, <span class="at">prior_odds=</span><span class="fl">0.5</span>) <span class="dv">1</span><span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span><span class="dv">1</span><span class="sc">/</span>bf<span class="sc">*</span>prior_odds)</span>
+<span id="cb5-5"><a href="bayesian-hypothesis-testing.html#cb5-5" aria-hidden="true" tabindex="-1"></a>bf <span class="ot">=</span> <span class="cf">function</span>(n,ybar,<span class="at">a=</span><span class="dv">1</span>,<span class="at">b=</span><span class="dv">1</span>) <span class="fu">exp</span>(n<span class="sc">*</span><span class="fu">log</span>(<span class="fl">0.5</span>)<span class="sc">+</span><span class="fu">lbeta</span>(a,b)<span class="sc">-</span><span class="fu">lbeta</span>(a<span class="sc">+</span>n<span class="sc">*</span>ybar,b<span class="sc">+</span>n<span class="sc">-</span>n<span class="sc">*</span>ybar))</span>
+<span id="cb5-6"><a href="bayesian-hypothesis-testing.html#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="bayesian-hypothesis-testing.html#cb5-7" aria-hidden="true" tabindex="-1"></a>paradox <span class="ot">=</span> <span class="fu">ddply</span>(paradox, .(n,ybar), summarize, <span class="at">pvalue=</span><span class="fu">pvalue</span>(<span class="fu">lrt</span>(n,ybar)), <span class="at">post_prob=</span><span class="fu">post_prob</span>(<span class="fu">bf</span>(n,ybar)))</span>
+<span id="cb5-8"><a href="bayesian-hypothesis-testing.html#cb5-8" aria-hidden="true" tabindex="-1"></a>m <span class="ot">=</span> <span class="fu">melt</span>(paradox, <span class="at">id=</span><span class="fu">c</span>(<span class="st">&quot;n&quot;</span>,<span class="st">&quot;ybar&quot;</span>))</span>
+<span id="cb5-9"><a href="bayesian-hypothesis-testing.html#cb5-9" aria-hidden="true" tabindex="-1"></a>p <span class="ot">=</span> <span class="fu">ggplot</span>(m, <span class="fu">aes</span>(<span class="fu">log10</span>(n),value,<span class="at">col=</span>variable)) <span class="sc">+</span> </span>
+<span id="cb5-10"><a href="bayesian-hypothesis-testing.html#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb5-11"><a href="bayesian-hypothesis-testing.html#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb5-12"><a href="bayesian-hypothesis-testing.html#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>The test statistic with point null hypothesis:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\lambda(y) &amp;=\frac{p\left(y \mid \theta_{0}\right)}{p\left(y \mid \hat{\theta}_{M L E}\right)} \\
+B F\left(H_{0}: H_{1}\right) &amp;=\frac{p\left(y \mid \theta_{0}\right)}{\int p(y \mid \theta) p\left(\theta \mid H_{1}\right) d \theta}=\frac{p\left(y \mid H_{0}\right)}{p\left(y \mid H_{1}\right)}
+\end{aligned}
+\]</span></p>
+<blockquote>
+<p>A few comments:</p>
+<ul>
+<li>The LRT chooses the best possible alternative value</li>
+<li>THe Bayesian test penalizes for vagueness in the prior</li>
+<li>The LRT can be interpreted as a Bayesian point mass prior exactly at the MLE</li>
+<li>Generally, p-values provide a measure of lack-of-fit of the null model</li>
+<li>Bayesian tests compare predictive performance of two Bayesian models (model+prior)</li>
+</ul>
+</blockquote>
+</div>
+<div id="prosecutors-fallacy" class="section level5 unnumbered hasAnchor">
+<h5>Prosecutor”s Fallacy<a href="bayesian-hypothesis-testing.html#prosecutors-fallacy" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>It is common for those using statistics to equate the following</p>
+<p><span class="math display">\[
+\text { pvalue } \stackrel{?}{=} P\left(\text { data } \mid H_{0} \text { true }\right) \neq P\left(H_{0} \text { true } \mid \text { data }\right)
+\]</span></p>
+<p>but we can use Bayes rule to show that these probabilities cannot be equated
+<span class="math display">\[
+p\left(H_{0} \mid y\right)=\frac{p\left(y \mid H_{0}\right) p\left(H_{0}\right)}{p(y)}=\frac{p\left(y \mid H_{0}\right) p\left(H_{0}\right)}{p\left(y \mid H_{0}\right) p\left(H_{0}\right)+p\left(y \mid H_{0}\right) p\left(H_{0}\right)}
+\]</span>
+This situation is common enough that it is called <strong>The Prosecutur’s Fallacy</strong>.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="model-checking.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/ch7.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

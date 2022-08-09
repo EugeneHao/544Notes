@@ -1,5 +1,15 @@
+thm:unnamed-chunk-16
+thm:unnamed-chunk-17
+thm:unnamed-chunk-18
 probabilty-and-inference
 parameter-estimation
 multiparameter-models
 data-asymptotics
 hierarchical-model
+model-checking
+bayesian-hypothesis-testing
+thm:unnamed-chunk-4
+thm:unnamed-chunk-5
+thm:unnamed-chunk-6
+jeffrey-lindley-paradox
+def:unnamed-chunk-10

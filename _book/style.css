@@ -12,3 +12,15 @@ pre {
 pre code {
   white-space: inherit;
 }
+
+.book .book-body .page-wrapper .page-inner {
+  max-width: 1000px !important;
+}
+
+em {
+	color: #1C78ED !important;
+}
+
+b, strong {
+   color: #E84F1A !important;
+}

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 2 Parameter Estimation | 544 Notes</title>
   <meta name="description" content="Chapter 2 Parameter Estimation | 544 Notes" />
-  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 2 Parameter Estimation | 544 Notes" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="JHao Sun" />
 
 
-<meta name="date" content="2022-06-12" />
+<meta name="date" content="2022-08-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -142,6 +142,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3" data-path="multiparameter-models.html"><a href="multiparameter-models.html"><i class="fa fa-check"></i><b>3</b> Multiparameter Models</a></li>
 <li class="chapter" data-level="4" data-path="data-asymptotics.html"><a href="data-asymptotics.html"><i class="fa fa-check"></i><b>4</b> Data Asymptotics</a></li>
 <li class="chapter" data-level="5" data-path="hierarchical-model.html"><a href="hierarchical-model.html"><i class="fa fa-check"></i><b>5</b> Hierarchical Model</a></li>
+<li class="chapter" data-level="6" data-path="model-checking.html"><a href="model-checking.html"><i class="fa fa-check"></i><b>6</b> Model Checking</a></li>
+<li class="chapter" data-level="7" data-path="bayesian-hypothesis-testing.html"><a href="bayesian-hypothesis-testing.html"><i class="fa fa-check"></i><b>7</b> Bayesian Hypothesis Testing</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -289,17 +291,17 @@ The natural conjugate prior is <span class="math inline">\(\sigma^2 \sim IG(a, b
 ## post-warmup draws per chain=1000, total post-warmup draws=4000.
 ## 
 ##        mean se_mean   sd   2.5%   25%   50%   75% 97.5% n_eff Rhat
-## theta  0.33    0.00 0.13   0.11  0.23  0.32  0.42  0.60  1642    1
-## lp__  -8.16    0.02 0.73 -10.18 -8.33 -7.88 -7.69 -7.64  1663    1
+## theta  0.33    0.00 0.13   0.11  0.23  0.32  0.42  0.62  1538    1
+## lp__  -8.18    0.02 0.75 -10.48 -8.36 -7.90 -7.70 -7.64  1301    1
 ## 
-## Samples were drawn using NUTS(diag_e) at Sun Jun 12 20:18:59 2022.
+## Samples were drawn using NUTS(diag_e) at Fri Aug  5 13:54:24 2022.
 ## For each parameter, n_eff is a crude measure of effective sample size,
 ## and Rhat is the potential scale reduction factor on split chains (at 
 ## convergence, Rhat=1).</code></pre>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="parameter-estimation.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(r)</span></code></pre></div>
 <pre><code>## ci_level: 0.8 (80% intervals)</code></pre>
 <pre><code>## outer_level: 0.95 (95% intervals)</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 
 </div>
 </div>

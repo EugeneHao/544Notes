@@ -1,6 +1,6 @@
 --- 
 title: "544 Notes"
-author: "JHao Sun"
+author: "Hao Sun"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
